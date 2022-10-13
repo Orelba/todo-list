@@ -1,4 +1,3 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path');
 
 module.exports = {
@@ -11,25 +10,25 @@ module.exports = {
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, 'dist'),
-    clean: true,
+    // clean: true,
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      title: 'Todo List',
-    }),
-  ],
-  module: {
-    rules: [
-      {
-        test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
-      },
-      {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: 'asset/resource',
-      },
-    ],
-  },
+  // plugins: [
+  //   new HtmlWebpackPlugin({
+  //     title: 'Todo List',
+  //   }),
+  // ],
+  // module: {
+  //   rules: [
+  //     {
+  //       test: /\.css$/i,
+  //       use: ['style-loader', 'css-loader'],
+  //     },
+  //     {
+  //       test: /\.(png|svg|jpg|jpeg|gif)$/i,
+  //       type: 'asset/resource',
+  //     },
+  //   ],
+  // },
   // optimization: {
   //   runtimeChunk: 'single',
   // }
