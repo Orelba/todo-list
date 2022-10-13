@@ -1,0 +1,90 @@
+:root {
+  --text-color: rgb(45, 37, 81);
+  --background: rgb(247, 248, 250);
+  --sidebar: rgb(255, 255, 255);
+  --vivid-color: rgb(100, 63, 219);
+  --muted-color: rgb(178, 174, 194);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  color: var(--text-color);
+}
+
+#content {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--background);
+}
+
+ul {
+  list-style: none;
+}
+
+nav {
+  padding: 30px 20px;
+  width: 300px;
+  height: 100vh;
+  background-color: var(--sidebar);
+  margin-right: 70px;
+}
+
+nav li {
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  border-radius: 13px;
+  gap: 10px;
+}
+
+nav li:hover {
+  background-color: var(--background);
+  color: var(--vivid-color);
+}
+
+nav li img {
+  filter: invert(80%) sepia(8%) saturate(450%) hue-rotate(211deg) brightness(89%) contrast(86%);
+}
+
+nav li:hover img {
+  filter: invert(26%) sepia(45%) saturate(5716%) hue-rotate(247deg) brightness(88%) contrast(94%);
+}
+
+.project-list {
+  font-size: 0.9rem;
+  margin-left: 40px;
+}
+
+.bulletpoint {
+  --size: 10px;
+
+  height: var(--size);
+  width: var(--size);
+  border-radius: 20px;
+}
+
+.add-project {
+  padding: 6px 4px;
+  gap: 6px;
+  color: var(--muted-color)
+}
+
+.red {
+  background-color: rgb(223, 97, 97);
+}
+
+.blue {
+  background-color: rgb(89, 89, 202);
+}
+
+main {
+  width: 100%;
+  padding: 30px 20px;
+}
