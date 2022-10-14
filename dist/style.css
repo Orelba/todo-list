@@ -1,9 +1,11 @@
 :root {
   --text-color: rgb(45, 37, 81);
-  --background: rgb(247, 248, 250);
-  --sidebar: rgb(255, 255, 255);
+  --main-theme-color: rgb(247, 248, 250);
+  --secondary-theme-color: rgb(255, 255, 255);
   --vivid-color: rgb(100, 63, 219);
-  --muted-color: rgb(178, 174, 194);
+  --main-muted-color: rgb(178, 174, 194);
+  --secondary-muted-color: rgb(235, 235, 239);
+  --default-radius: 13px;
 }
 
 * {
@@ -12,16 +14,16 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 16px;
-  color: var(--text-color);
+html {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 16px !important;
+  color: var(--text-color) !important;
 }
 
 #content {
   display: flex;
   min-height: 100vh;
-  background-color: var(--background);
+  background-color: var(--main-theme-color);
 }
 
 ul {
@@ -32,7 +34,7 @@ nav {
   padding: 30px 20px;
   width: 300px;
   height: 100vh;
-  background-color: var(--sidebar);
+  background-color: var(--secondary-theme-color);
   margin-right: 70px;
 }
 
@@ -40,16 +42,17 @@ nav li {
   padding: 8px;
   display: flex;
   align-items: center;
-  border-radius: 13px;
+  border-radius: var(--default-radius);
   gap: 10px;
 }
 
 nav li:hover {
-  background-color: var(--background);
+  background-color: var(--main-theme-color);
   color: var(--vivid-color);
 }
 
-nav li img {
+nav li img,
+.add-task-btn img {
   filter: invert(80%) sepia(8%) saturate(450%) hue-rotate(211deg) brightness(89%) contrast(86%);
 }
 
@@ -73,7 +76,7 @@ nav li:hover img {
 .add-project {
   padding: 6px 4px;
   gap: 6px;
-  color: var(--muted-color)
+  color: var(--main-muted-color)
 }
 
 .red {
@@ -87,4 +90,43 @@ nav li:hover img {
 main {
   width: 100%;
   padding: 30px 20px;
+  margin-right: 70px;
+}
+
+.main-heading {
+  color: var(--vivid-color);
+  text-align: center;
+}
+
+.task-container h2 {
+  margin-bottom: 18px;
+}
+
+.task {
+  background-color: var(--secondary-theme-color);
+  min-width: 500px;
+  width: 100%;
+  height: 80px;
+  border: 1px solid var(--secondary-muted-color);
+  border-bottom-width: 3px;
+  border-radius: var(--default-radius);
+  margin-bottom: 8px;
+}
+
+.add-task-btn {
+  appearance: none;
+  border: 1px solid var(--main-muted-color);
+  color: var(--main-muted-color);
+  background-color: inherit;
+  width: 100%;
+  height: 45px;
+  border-radius: var(--default-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.add-task-btn:hover {
+
 }
