@@ -1,11 +1,11 @@
 :root {
   --text-color: rgb(45, 37, 81);
-  --main-theme-color: rgb(247, 248, 250);
+  --main-theme-color: rgb(246, 247, 249);
   --secondary-theme-color: rgb(255, 255, 255);
-  --vivid-color: rgb(100, 63, 219);
-  --main-muted-color: rgb(178, 174, 194);
-  --secondary-muted-color: rgb(235, 235, 239);
-  --default-radius: 13px;
+  --vivid-color: rgb(99, 62, 218);
+  --muted-color: rgb(178, 174, 194);
+  --task-border-muted-color: rgb(235, 235, 239);
+  --default-radius: 12px;
 }
 
 * {
@@ -15,15 +15,22 @@
 }
 
 html {
+ font-size: 16px;
+}
+
+html * {
   font-family: 'Montserrat', sans-serif !important;
-  font-size: 16px !important;
-  color: var(--text-color) !important;
+  color: var(--text-color);
+}
+
+body {
+  background-color: var(--main-theme-color);
+  min-height: 100vh;
+  position: relative;
 }
 
 #content {
   display: flex;
-  min-height: 100vh;
-  background-color: var(--main-theme-color);
 }
 
 ul {
@@ -32,14 +39,19 @@ ul {
 
 nav {
   padding: 30px 20px;
-  width: 300px;
+  width: 325px;
   height: 100vh;
   background-color: var(--secondary-theme-color);
-  margin-right: 70px;
+  flex-shrink: 0;
 }
 
 nav li {
   padding: 8px;
+}
+
+nav li,
+.task-project-name {
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
   border-radius: var(--default-radius);
@@ -52,16 +64,16 @@ nav li:hover {
 }
 
 nav li img,
-.add-task-btn img {
+button img {
   filter: invert(80%) sepia(8%) saturate(450%) hue-rotate(211deg) brightness(89%) contrast(86%);
 }
 
-nav li:hover img {
+nav li:hover img,
+button:hover img {
   filter: invert(26%) sepia(45%) saturate(5716%) hue-rotate(247deg) brightness(88%) contrast(94%);
 }
 
 .project-list {
-  font-size: 0.9rem;
   margin-left: 40px;
 }
 
@@ -71,26 +83,27 @@ nav li:hover img {
   height: var(--size);
   width: var(--size);
   border-radius: 20px;
+  flex-shrink: 0;
 }
 
 .add-project {
   padding: 6px 4px;
   gap: 6px;
-  color: var(--main-muted-color)
+  color: var(--muted-color);
 }
 
-.red {
+.red-bg {
   background-color: rgb(223, 97, 97);
 }
 
-.blue {
+.blue-bg {
   background-color: rgb(89, 89, 202);
 }
 
 main {
   width: 100%;
   padding: 30px 20px;
-  margin-right: 70px;
+  margin: 0 70px;
 }
 
 .main-heading {
@@ -102,25 +115,118 @@ main {
   margin-bottom: 18px;
 }
 
+/* Task */
 .task {
   background-color: var(--secondary-theme-color);
   min-width: 500px;
-  width: 100%;
-  height: 80px;
-  border: 1px solid var(--secondary-muted-color);
+  min-height: 70px;
+  border: 1px solid var(--task-border-muted-color);
   border-bottom-width: 3px;
   border-radius: var(--default-radius);
   margin-bottom: 8px;
+  padding: 8px 8px 4px 0;
+
+  display: grid;
+  grid-template: 1fr 36px / 60px repeat(2, 1fr);
+  grid-row-gap: 4px;
+}
+
+#task-checkbox,
+.task-project-name {
+  align-self: center;
+}
+
+#task-checkbox,
+.task-title {
+  align-self: start;
+}
+
+#task-checkbox {
+  justify-self: center;
+  margin-top: 2px;
+}
+
+.priority {
+  align-self: end;
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.task-title {
+  grid-column: 2 / 4;
+  grid-row: 1;
+}
+
+.task-priority {
+  font-size: 0.9rem;
+  color: var(--muted-color);
+}
+
+.task-due-date {
+  font-size: 0.9rem;
+  color: var(--muted-color);
+  justify-self: end;
+}
+
+.task-project-name {
+  padding: 4px 4px 4px 8px;
+  place-self: end end;
+  grid-column: 3;
+  grid-row: 2;
+}
+
+/* Checkbox */
+input[type="checkbox"] {
+  --size: 20px;
+
+  position: relative;
+  height: var(--size);
+  width: var(--size);
+  appearance: none;
+  border: 2px solid var(--muted-color);
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+input[type="checkbox"]:hover,
+input[type="checkbox"]:checked:hover {
+  border-color: var(--text-color);
+}
+
+input[type="checkbox"]::before {
+  position: absolute;
+  content: '\2714';
+  color: var(--text-color);
+  top: -1px;
+  right: 3px;
+  visibility: hidden;
+  opacity: 0;
+}
+
+input[type="checkbox"]:checked::before {
+  visibility: visible;
+  opacity: 1;
+  transition: 0.18s;
+}
+
+.line-through {
+  text-decoration: line-through;
+}
+
+button {
+  appearance: none;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--default-radius);
 }
 
 .add-task-btn {
-  appearance: none;
-  border: 1px solid var(--main-muted-color);
-  color: var(--main-muted-color);
+  border: 1px solid var(--muted-color);
+  color: var(--muted-color);
   background-color: inherit;
   width: 100%;
   height: 45px;
-  border-radius: var(--default-radius);
+  
   display: flex;
   align-items: center;
   justify-content: center;
@@ -128,5 +234,78 @@ main {
 }
 
 .add-task-btn:hover {
+  border-color: var(--vivid-color);
+  color: var(--vivid-color);
+}
 
+/* Overlay Modal */
+.modal {
+  --height: 234px;
+  --width: 404px;
+
+  background-color: var(--secondary-theme-color);
+  border: none;
+  border-radius: var(--default-radius);
+  height: var(--height);
+  width: var(--width);
+  padding: 27px;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: calc(-1 * (var(--height) / 2));
+  margin-left: calc(-1 * (var(--width) / 2));
+}
+
+.modal::backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(77, 67, 117, 0.6);
+}
+
+#modal-project-name-input {
+  appearance: none;
+  border: none;
+  border-radius: var(--default-radius);
+  background-color: var(--main-theme-color);
+  height: 49px;
+  width: 100%;
+  padding: 15px 25px;
+}
+
+#modal-project-name-input:focus {
+  outline: none;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  justify-content: center;
+}
+
+.modal button {
+  font-weight: 600;
+  height: 48px;
+  min-width: 120px;
+}
+
+.modal-cancel-btn {
+  background-color: inherit;
+  color: var(--vivid-color);
+  border: 1px solid var(--vivid-color);
+}
+
+.modal-add-project-btn {
+  background-color: var(--vivid-color);
+  color: var(--secondary-theme-color);
+}
+
+#modal-project-name-input,
+.modal h4,
+.modal-buttons {
+  margin-top: 30px;
 }
