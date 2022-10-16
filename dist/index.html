@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="images/favicon-120.png" type="image/x-icon">
   <script defer src="index.js"></script>
 </head>
 
@@ -18,40 +19,65 @@
     <nav>
       <ul>
         <li>
-          <img src="images/today.png" alt="Today" height="28" width="28">
+          <img src="images/today.png" alt="Today" height="27" width="27">
           Today
         </li>
+
         <li>
-          <img src="images/week.png" alt="Week" height="28" width="28">
+          <img src="images/week.png" alt="Week" height="27" width="27">
           This week
         </li>
+
         <li>
-          <img src="images/folder.png" alt="Projects" height="28" width="28">
+          <img src="images/folder.png" alt="Projects" height="27" width="27">
           Projects
         </li>
+
         <ul class="project-list">
-          <li><div class="bulletpoint red"></div>General</li>
-          <li><div class="bulletpoint blue"></div>Some Project</li>
+          <li><span class="bulletpoint red-bg"></span>General</li>
+
+          <li><span class="bulletpoint blue-bg"></span>Some Project</li>
+
           <li class="add-project">
             <img src="images/plus.png" alt="Add" height="19" width="19">
-            Add Project
+            Add New
           </li>
         </ul>
+
       </ul>
     </nav>
-    
+
     <main>
       <h1 class="main-heading">Today</h1>
       <div class="task-container">
         <h2>Tasks</h2>
         <article class="task">
-
+          <input type="checkbox" name="task-checkbox" id="task-checkbox">
+          <h3 class="task-title">Some title</h3>
+          <div class="priority">
+            <p class="task-priority">Low priority</p>
+            <p class="task-due-date">No due date</p>
+          </div>
+          <p class="task-project-name">General<span class="bulletpoint red-bg"></span></p>
         </article>
         <article class="task">
-          
+          <input type="checkbox" name="task-checkbox" id="task-checkbox" checked>
+          <h3 class="task-title line-through">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto optio sit
+            minus praesentium.</h3>
+          <div class="priority">
+            <p class="task-priority">High priority</p>
+            <p class="task-due-date">March 12th 2021</p>
+          </div>
+          <p class="task-project-name">Some Project<span class="bulletpoint blue-bg"></span></p>
         </article>
         <article class="task">
-          
+          <input type="checkbox" name="task-checkbox" id="task-checkbox">
+          <h3 class="task-title">Accusantium impedit non labore ex quam quas eligendi rerum earum deserunt quasi</h3>
+          <div class="priority">
+            <p class="task-priority">Normal priority</p>
+            <p class="task-due-date">June 4th 2022</p>
+          </div>
+          <p class="task-project-name">Some Project<span class="bulletpoint blue-bg"></span></p>
         </article>
         <button class="add-task-btn">
           <img src="images/plus.png" alt="Add" height="19" width="19">
@@ -60,6 +86,19 @@
       </div>
     </main>
   </div>
+
+  <dialog class="modal">
+    <div class="modal-content">
+      <h3>Add new project</h3>
+
+      <input type="text" name="modal-project-name" id="modal-project-name-input" placeholder="Project's name">
+
+      <div class="modal-buttons">
+        <button class="modal-cancel-btn">Cancel</button>
+        <button class="modal-add-project-btn">Add project</button>
+      </div>
+    </div>
+  </dialog>
 </body>
 
 </html>
