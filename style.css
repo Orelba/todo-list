@@ -15,7 +15,7 @@
 }
 
 html {
- font-size: 16px;
+  font-size: 16px;
 }
 
 html * {
@@ -40,13 +40,14 @@ ul {
 nav {
   padding: 30px 20px;
   width: 325px;
-  height: 100vh;
+  min-height: 100vh;
   background-color: var(--secondary-theme-color);
   flex-shrink: 0;
 }
 
 nav li {
   padding: 8px;
+  overflow-wrap: anywhere;
 }
 
 nav li,
@@ -121,7 +122,7 @@ main {
   min-width: 500px;
   min-height: 70px;
   border: 1px solid var(--task-border-muted-color);
-  border-bottom-width: 3px;
+  border-bottom-width: 2px;
   border-radius: var(--default-radius);
   margin-bottom: 8px;
   padding: 8px 8px 4px 0;
@@ -146,6 +147,24 @@ main {
   margin-top: 2px;
 }
 
+.collapse-btn {
+  height: 20px;
+  width: 30px;
+  background-color: inherit;
+  place-self: end center;
+  grid-row: 2;
+  grid-column: 1;
+  transition: transform 0.18s;
+}
+
+.collapse-btn:hover {
+  background-color: var(--main-theme-color);
+}
+
+.active {
+  transform: rotate(-180deg);
+}
+
 .priority {
   align-self: end;
   grid-column: 2;
@@ -153,6 +172,7 @@ main {
 }
 
 .task-title {
+  font-size: 1.05rem;
   grid-column: 2 / 4;
   grid-row: 1;
 }
@@ -206,11 +226,21 @@ input[type="checkbox"]::before {
 input[type="checkbox"]:checked::before {
   visibility: visible;
   opacity: 1;
-  transition: 0.18s;
+  transition: opacity 0.18s;
 }
 
 .line-through {
   text-decoration: line-through;
+}
+
+/* Collapse Task Description */
+.content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: var(--secondary-theme-color);
+  grid-row: 3 / 4;
+  grid-column: 2 / -1;
 }
 
 button {
@@ -218,6 +248,7 @@ button {
   cursor: pointer;
   border: none;
   border-radius: var(--default-radius);
+  font-weight: 600;
 }
 
 .add-task-btn {
@@ -226,7 +257,7 @@ button {
   background-color: inherit;
   width: 100%;
   height: 45px;
-  
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -236,6 +267,105 @@ button {
 .add-task-btn:hover {
   border-color: var(--vivid-color);
   color: var(--vivid-color);
+}
+
+input[type="text"],
+textarea {
+  appearance: none;
+  border-radius: var(--default-radius);
+}
+
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+
+input[type="date"] {
+  background-color: inherit;
+  height: 32px;
+  width: 134px;
+  border: 1px solid var(--task-border-muted-color);
+  border-radius: var(--default-radius);
+}
+
+input[type="date"]::-webkit-datetime-edit-day-field:focus,
+input[type="date"]::-webkit-datetime-edit-month-field:focus,
+input[type="date"]::-webkit-datetime-edit-year-field:focus {
+  background-color: var(--vivid-color);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="date"]::-webkit-datetime-edit {
+  padding: 0 10px;
+}
+
+/* Add task form */
+.add-task-form {
+  background-color: var(--secondary-theme-color);
+  border: 1px solid var(--task-border-muted-color);
+  border-radius: var(--default-radius);
+  height: fit-content;
+  width: 100%;
+  padding: 8px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#add-task-form-task-name {
+  height: 32px;
+  width: 100%;
+  border: 1px solid var(--task-border-muted-color);
+  padding: 8px 10px;
+}
+
+textarea {
+  padding: 8px 10px;
+  border: 1px solid var(--task-border-muted-color);
+  resize: none;
+}
+
+.date-and-priority {
+  display: flex;
+  gap: 20px;
+}
+
+.priority-dropdown-container {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+#priority-dropdown {
+  background-color: inherit;
+  border: 1px solid var(--task-border-muted-color);
+  border-radius: var(--default-radius);
+  height: 32px;
+}
+
+.add-task-form-buttons {
+  display: flex;
+  gap: 8px;
+  width: fit-content;
+  place-self: end end;
+}
+
+.add-task-form-buttons button {
+  height: 32px;
+  width: 100px;
+}
+
+.add-task-form-cancel-btn {
+  background-color: var(--main-theme-color);
+}
+
+.add-task-form-add-btn {
+  background-color: var(--vivid-color);
+  color: var(--secondary-theme-color)
 }
 
 /* Overlay Modal */
@@ -267,17 +397,11 @@ button {
 }
 
 #modal-project-name-input {
-  appearance: none;
   border: none;
-  border-radius: var(--default-radius);
   background-color: var(--main-theme-color);
   height: 49px;
   width: 100%;
   padding: 15px 25px;
-}
-
-#modal-project-name-input:focus {
-  outline: none;
 }
 
 .modal-buttons {
@@ -288,7 +412,6 @@ button {
 }
 
 .modal button {
-  font-weight: 600;
   height: 48px;
   min-width: 120px;
 }

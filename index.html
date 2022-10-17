@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Todo List</title>
+  <title>Todoit</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
@@ -51,17 +51,29 @@
       <h1 class="main-heading">Today</h1>
       <div class="task-container">
         <h2>Tasks</h2>
+
         <article class="task">
           <input type="checkbox" name="task-checkbox" id="task-checkbox">
+          <button class="collapse-btn">
+            <img src="images/chevron-down.png" alt="Collapse" height="20" width="20">
+          </button>
           <h3 class="task-title">Some title</h3>
           <div class="priority">
             <p class="task-priority">Low priority</p>
             <p class="task-due-date">No due date</p>
           </div>
           <p class="task-project-name">General<span class="bulletpoint red-bg"></span></p>
+          <div class="content">
+            <h4>Description:</h4>
+            <p>IT FUCKIN WORKS<br>YEEEAAAAAAHHH</p>
+          </div>
         </article>
+
         <article class="task">
           <input type="checkbox" name="task-checkbox" id="task-checkbox" checked>
+          <button class="collapse-btn">
+            <img src="images/chevron-down.png" alt="Collapse" height="20" width="20">
+          </button>
           <h3 class="task-title line-through">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto optio sit
             minus praesentium.</h3>
           <div class="priority">
@@ -69,20 +81,52 @@
             <p class="task-due-date">March 12th 2021</p>
           </div>
           <p class="task-project-name">Some Project<span class="bulletpoint blue-bg"></span></p>
+          <div class="content">
+            <p>IT FUCKIN WORKS<br>YEEEAAAAAAHHH</p>
+          </div>
         </article>
+
         <article class="task">
           <input type="checkbox" name="task-checkbox" id="task-checkbox">
+          <button class="collapse-btn">
+            <img src="images/chevron-down.png" alt="Collapse" height="20" width="20">
+          </button>
           <h3 class="task-title">Accusantium impedit non labore ex quam quas eligendi rerum earum deserunt quasi</h3>
           <div class="priority">
             <p class="task-priority">Normal priority</p>
             <p class="task-due-date">June 4th 2022</p>
           </div>
           <p class="task-project-name">Some Project<span class="bulletpoint blue-bg"></span></p>
+          <div class="content">
+            <h4>Description:</h4>
+            <p>IT FUCKIN WORKS<br>YEEEAAAAAAHHH</p>
+          </div>
         </article>
-        <button class="add-task-btn">
+
+        <!-- <button class="add-task-btn">
           <img src="images/plus.png" alt="Add" height="19" width="19">
           Add Task
-        </button>
+        </button> -->
+
+        <!-- <div class="add-task-form">
+          <input type="text" name="add-task-form-task-name" id="add-task-form-task-name" placeholder="Task name">
+          <textarea name="" id="" cols="30" rows="4" placeholder="Description"></textarea>
+          <div class="date-and-priority">
+            <input type="date" name="add-task-form-due-date" id="add-task-form-due-date">
+            <div class="priority-dropdown-container">
+              <img src="images/priority.png" alt="Priority" height="19" width="19">
+              <select name="priority-dropdown" id="priority-dropdown">
+                <option value="low">Low</option>
+                <option value="normal">Normal</option>
+                <option value="high">High</option>
+              </select>
+            </div>
+          </div>
+          <div class="add-task-form-buttons">
+            <button class="add-task-form-cancel-btn">Cancel</button>
+            <button class="add-task-form-add-btn">Add task</button>
+          </div>
+        </div> -->
       </div>
     </main>
   </div>
@@ -90,9 +134,8 @@
   <dialog class="modal">
     <div class="modal-content">
       <h3>Add new project</h3>
-
-      <input type="text" name="modal-project-name" id="modal-project-name-input" placeholder="Project's name">
-
+      <input type="text" name="modal-project-name" id="modal-project-name-input" maxlength="50"
+        placeholder="Project name">
       <div class="modal-buttons">
         <button class="modal-cancel-btn">Cancel</button>
         <button class="modal-add-project-btn">Add project</button>
