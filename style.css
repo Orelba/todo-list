@@ -112,87 +112,8 @@ main {
   text-align: center;
 }
 
-.task-container h2 {
+.tasks-container h2 {
   margin-bottom: 18px;
-}
-
-/* Task */
-.task {
-  background-color: var(--secondary-theme-color);
-  min-width: 500px;
-  min-height: 70px;
-  border: 1px solid var(--task-border-muted-color);
-  border-bottom-width: 2px;
-  border-radius: var(--default-radius);
-  margin-bottom: 8px;
-  padding: 8px 8px 4px 0;
-
-  display: grid;
-  grid-template: 1fr 36px / 60px repeat(2, 1fr);
-  grid-row-gap: 4px;
-}
-
-#task-checkbox,
-.task-project-name {
-  align-self: center;
-}
-
-#task-checkbox,
-.task-title {
-  align-self: start;
-}
-
-#task-checkbox {
-  justify-self: center;
-  margin-top: 2px;
-}
-
-.collapse-btn {
-  height: 20px;
-  width: 30px;
-  background-color: inherit;
-  place-self: end center;
-  grid-row: 2;
-  grid-column: 1;
-  transition: transform 0.18s;
-}
-
-.collapse-btn:hover {
-  background-color: var(--main-theme-color);
-}
-
-.active {
-  transform: rotate(-180deg);
-}
-
-.priority {
-  align-self: end;
-  grid-column: 2;
-  grid-row: 2;
-}
-
-.task-title {
-  font-size: 1.05rem;
-  grid-column: 2 / 4;
-  grid-row: 1;
-}
-
-.task-priority {
-  font-size: 0.9rem;
-  color: var(--muted-color);
-}
-
-.task-due-date {
-  font-size: 0.9rem;
-  color: var(--muted-color);
-  justify-self: end;
-}
-
-.task-project-name {
-  padding: 4px 4px 4px 8px;
-  place-self: end end;
-  grid-column: 3;
-  grid-row: 2;
 }
 
 /* Checkbox */
@@ -229,18 +150,112 @@ input[type="checkbox"]:checked::before {
   transition: opacity 0.18s;
 }
 
+/* Task */
+.task {
+  background-color: var(--secondary-theme-color);
+  min-width: 500px;
+  min-height: 70px;
+  border: 1px solid var(--task-border-muted-color);
+  border-bottom-width: 2px;
+  border-radius: var(--default-radius);
+  margin-bottom: 8px;
+  padding: 8px 8px 4px 0;
+  overflow-wrap: break-word;
+
+  display: grid;
+  grid-template:  1fr 36px / 60px repeat(2, 1fr) min-content;
+}
+
+#task-checkbox,
+.task-project-name {
+  align-self: center;
+}
+
+#task-checkbox,
+.task-title {
+  align-self: start;
+}
+
+#task-checkbox {
+  justify-self: center;
+  margin-top: 2px;
+
+  grid-row: 1;
+  grid-column: 1;
+}
+
+.collapse-btn {
+  height: 20px;
+  width: 30px;
+  background-color: inherit;
+  place-self: end center;
+  transition: transform 0.22s ease-out;
+
+  grid-row: -1;
+  grid-column: 1;
+}
+
+.active {
+  transform: rotate(-180deg);
+}
+
+.task-title {
+  font-size: 1.05rem;
+  margin-bottom: 4px;
+
+  grid-row: 1;
+  grid-column: 2 / 4;
+}
+
 .line-through {
   text-decoration: line-through;
 }
 
-/* Collapse Task Description */
+.task-edit {
+  background-color: inherit;
+  height: 17px;
+  width: 17px;
+  place-self: start end;
+
+  grid-row: 1;
+  grid-column: 4;
+}
+
 .content {
+  font-size: 0.9rem;
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.2s ease-out;
+  transition: max-height 0.22s ease-out;
   background-color: var(--secondary-theme-color);
-  grid-row: 3 / 4;
-  grid-column: 2 / -1;
+
+  grid-row: 2 / 3;
+  grid-column: 2 / 4;
+}
+
+.priority {
+  align-self: end;
+
+  grid-row: -1;
+  grid-column: 2 / 3;
+}
+
+.task-priority {
+  font-size: 0.9rem;
+  color: var(--muted-color);
+}
+
+.task-due-date {
+  font-size: 0.9rem;
+  color: var(--muted-color);
+  justify-self: end;
+}
+
+.task-project-name {
+  padding: 4px 4px 4px 8px;
+  place-self: end end;
+
+  grid-row: -1;
+  grid-column: 3 / 5;
 }
 
 button {
@@ -431,4 +446,8 @@ textarea {
 .modal h4,
 .modal-buttons {
   margin-top: 30px;
+}
+
+.task {
+  grid-template:  1fr auto auto / 60px repeat(2, 1fr) !important;
 }

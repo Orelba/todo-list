@@ -49,7 +49,7 @@
 
     <main>
       <h1 class="main-heading">Today</h1>
-      <div class="task-container">
+      <div class="tasks-container">
         <h2>Tasks</h2>
 
         <article class="task">
@@ -58,15 +58,13 @@
             <img src="images/chevron-down.png" alt="Collapse" height="20" width="20">
           </button>
           <h3 class="task-title">Some title</h3>
+          <button class="task-edit"><img src="images/edit.svg" alt="Edit" height="17" width="17"></button>
+          <div class="content"></div>
           <div class="priority">
             <p class="task-priority">Low priority</p>
             <p class="task-due-date">No due date</p>
           </div>
           <p class="task-project-name">General<span class="bulletpoint red-bg"></span></p>
-          <div class="content">
-            <h4>Description:</h4>
-            <p>IT FUCKIN WORKS<br>YEEEAAAAAAHHH</p>
-          </div>
         </article>
 
         <article class="task">
@@ -76,14 +74,16 @@
           </button>
           <h3 class="task-title line-through">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto optio sit
             minus praesentium.</h3>
+          <button class="task-edit"><img src="images/edit.svg" alt="Edit" height="17" width="17"></button>
+          <div class="content">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi dolor, cupiditate sunt nulla laboriosam a
+              incidunt sint fugit quae accusamus!<br>YEEEAAAAAAHHH</p>
+          </div>
           <div class="priority">
             <p class="task-priority">High priority</p>
             <p class="task-due-date">March 12th 2021</p>
           </div>
           <p class="task-project-name">Some Project<span class="bulletpoint blue-bg"></span></p>
-          <div class="content">
-            <p>IT FUCKIN WORKS<br>YEEEAAAAAAHHH</p>
-          </div>
         </article>
 
         <article class="task">
@@ -92,21 +92,21 @@
             <img src="images/chevron-down.png" alt="Collapse" height="20" width="20">
           </button>
           <h3 class="task-title">Accusantium impedit non labore ex quam quas eligendi rerum earum deserunt quasi</h3>
+          <button class="task-edit"><img src="images/edit.svg" alt="Edit" height="17" width="17"></button>
+          <div class="content">
+            <p>IT WORKS<br>YEEEAAAAAAHHH</p>
+          </div>
           <div class="priority">
             <p class="task-priority">Normal priority</p>
             <p class="task-due-date">June 4th 2022</p>
           </div>
           <p class="task-project-name">Some Project<span class="bulletpoint blue-bg"></span></p>
-          <div class="content">
-            <h4>Description:</h4>
-            <p>IT FUCKIN WORKS<br>YEEEAAAAAAHHH</p>
-          </div>
         </article>
 
-        <!-- <button class="add-task-btn">
+        <button class="add-task-btn">
           <img src="images/plus.png" alt="Add" height="19" width="19">
           Add Task
-        </button> -->
+        </button>
 
         <!-- <div class="add-task-form">
           <input type="text" name="add-task-form-task-name" id="add-task-form-task-name" placeholder="Task name">
