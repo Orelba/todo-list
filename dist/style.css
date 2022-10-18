@@ -26,7 +26,6 @@ html * {
 body {
   background-color: var(--main-theme-color);
   min-height: 100vh;
-  position: relative;
 }
 
 #content {
@@ -38,11 +37,18 @@ ul {
 }
 
 nav {
-  padding: 30px 20px;
+  padding: 0 20px 30px;
   width: 325px;
   min-height: 100vh;
   background-color: var(--secondary-theme-color);
   flex-shrink: 0;
+  position: relative;
+}
+
+nav>ul {
+  padding-top: 30px;
+  position: sticky;
+  top: 0;
 }
 
 nav li {
@@ -105,6 +111,10 @@ main {
   width: 100%;
   padding: 30px 20px;
   margin: 0 70px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .main-heading {
@@ -112,8 +122,62 @@ main {
   text-align: center;
 }
 
+.tasks-container {
+  max-width: 1300px;
+}
+
 .tasks-container h2 {
   margin-bottom: 18px;
+}
+
+/* Dropdown Menu */
+.drop-btn {
+  background-color: inherit;
+  height: 15px;
+  width: 15px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+}
+
+.drop-btn img {
+  pointer-events: none;
+}
+
+li:hover .drop-btn {
+  visibility: visible;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  margin-left: auto;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: var(--secondary-theme-color);
+  border: 1px solid var(--default-radius);
+  min-width: 110px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  padding: 8px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: var(--main-theme-color);
+}
+
+.show {
+  display: block;
 }
 
 /* Checkbox */
@@ -163,7 +227,7 @@ input[type="checkbox"]:checked::before {
   overflow-wrap: break-word;
 
   display: grid;
-  grid-template:  1fr 36px / 60px repeat(2, 1fr) min-content;
+  grid-template: 1fr auto auto / 60px repeat(2, 1fr) min-content;
 }
 
 #task-checkbox,
@@ -362,11 +426,23 @@ textarea {
   height: 32px;
 }
 
+.add-task-bottom-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.delete-task-btn {
+  background-color: inherit;
+  width: 19px;
+  height: 19px;
+  margin-left: 5px;
+}
+
 .add-task-form-buttons {
   display: flex;
   gap: 8px;
   width: fit-content;
-  place-self: end end;
 }
 
 .add-task-form-buttons button {
@@ -446,8 +522,4 @@ textarea {
 .modal h4,
 .modal-buttons {
   margin-top: 30px;
-}
-
-.task {
-  grid-template:  1fr auto auto / 60px repeat(2, 1fr) !important;
 }

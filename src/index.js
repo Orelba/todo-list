@@ -1,3 +1,4 @@
+// Collapse
 const collapseBtns = document.querySelectorAll('.collapse-btn')
 
 collapseBtns.forEach(btn => {
@@ -17,3 +18,29 @@ collapseBtns.forEach(btn => {
     }
   })
 })
+
+
+// Dropdown
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+const dropdownBtns = document.querySelectorAll('.drop-btn')
+
+dropdownBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const dropdownContent = btn.parentElement.querySelector('.dropdown-content')
+    dropdownContent.classList.toggle('show')
+  })
+})
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function (event) {
+  if (!event.target.matches('.drop-btn')) {
+    const dropdowns = document.getElementsByClassName('dropdown-content')
+    for (let i = 0; i < dropdowns.length; i++) {
+      const openDropdown = dropdowns[i]
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show')
+      }
+    }
+  }
+}
