@@ -1,46 +1,10 @@
-// Collapse
-const collapseBtns = document.querySelectorAll('.collapse-btn')
+import temporaryUI from './modules/user-interface'
+// import Task from './modules/task'
 
-collapseBtns.forEach(btn => {
-  btn.addEventListener('click', function () {
-    const content = this.parentElement.querySelector('.content')
+document.addEventListener('DOMContentLoaded', temporaryUI)
 
-    if (content.style.maxHeight) {
-      this.classList.remove('active')
-      content.style.maxHeight = null
-      content.style.marginBottom = null
-    } else {
-      if (content.childNodes.length !== 0) {
-        this.classList.add('active')
-        content.style.maxHeight = content.scrollHeight + 'px'
-        content.style.marginBottom = '4px'
-      }
-    }
-  })
-})
+// const someTask = new Task('some title', 'yada yada', 'Low')
+// console.log(someTask)
 
-
-// Dropdown
-/* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-const dropdownBtns = document.querySelectorAll('.drop-btn')
-
-dropdownBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const dropdownContent = btn.parentElement.querySelector('.dropdown-content')
-    dropdownContent.classList.toggle('show')
-  })
-})
-
-// Close the dropdown menu if the user clicks outside of it
-window.onclick = function (event) {
-  if (!event.target.matches('.drop-btn')) {
-    const dropdowns = document.getElementsByClassName('dropdown-content')
-    for (let i = 0; i < dropdowns.length; i++) {
-      const openDropdown = dropdowns[i]
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show')
-      }
-    }
-  }
-}
+// const otherTask = new Task('other task', 'some desc', 'Normal', '24/05/22')
+// console.log(otherTask)

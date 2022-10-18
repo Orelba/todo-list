@@ -28,6 +28,18 @@ body {
   min-height: 100vh;
 }
 
+img {
+  user-select: none;
+}
+
+button {
+  appearance: none;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--default-radius);
+  font-weight: 600;
+}
+
 #content {
   display: flex;
 }
@@ -71,12 +83,14 @@ nav li:hover {
 }
 
 nav li img,
-button img {
+button img,
+.dropdown-content div>img {
   filter: invert(80%) sepia(8%) saturate(450%) hue-rotate(211deg) brightness(89%) contrast(86%);
 }
 
-nav li:hover img,
-button:hover img {
+nav li:hover>img,
+button:hover img,
+.dropdown-content div:hover>img {
   filter: invert(26%) sepia(45%) saturate(5716%) hue-rotate(247deg) brightness(88%) contrast(94%);
 }
 
@@ -122,11 +136,11 @@ main {
   text-align: center;
 }
 
-.tasks-container {
+.main-content {
   max-width: 1300px;
 }
 
-.tasks-container h2 {
+.tasks-container>h2 {
   margin-bottom: 18px;
 }
 
@@ -159,6 +173,7 @@ li:hover .drop-btn {
 .dropdown-content {
   display: none;
   position: absolute;
+  font-size: 0.9rem;
   background-color: var(--secondary-theme-color);
   border: 1px solid var(--default-radius);
   min-width: 110px;
@@ -166,13 +181,14 @@ li:hover .drop-btn {
   z-index: 1;
 }
 
-.dropdown-content a {
+.dropdown-content div {
   padding: 8px 16px;
-  text-decoration: none;
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-.dropdown-content a:hover {
+.dropdown-content div:hover {
   background-color: var(--main-theme-color);
 }
 
@@ -227,7 +243,7 @@ input[type="checkbox"]:checked::before {
   overflow-wrap: break-word;
 
   display: grid;
-  grid-template: 1fr auto auto / 60px repeat(2, 1fr) min-content;
+  grid-template: 1fr auto auto / 60px repeat(2, 1fr) 20px;
 }
 
 #task-checkbox,
@@ -275,14 +291,15 @@ input[type="checkbox"]:checked::before {
   text-decoration: line-through;
 }
 
-.task-edit {
-  background-color: inherit;
-  height: 17px;
-  width: 17px;
+.task .dropdown {
   place-self: start end;
 
   grid-row: 1;
   grid-column: 4;
+}
+
+.task .drop-btn{
+  visibility: visible;
 }
 
 .content {
@@ -320,14 +337,6 @@ input[type="checkbox"]:checked::before {
 
   grid-row: -1;
   grid-column: 3 / 5;
-}
-
-button {
-  appearance: none;
-  cursor: pointer;
-  border: none;
-  border-radius: var(--default-radius);
-  font-weight: 600;
 }
 
 .add-task-btn {
@@ -426,17 +435,10 @@ textarea {
   height: 32px;
 }
 
-.add-task-bottom-container {
+.add-task-form-bottom-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.delete-task-btn {
-  background-color: inherit;
-  width: 19px;
-  height: 19px;
-  margin-left: 5px;
 }
 
 .add-task-form-buttons {
