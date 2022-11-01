@@ -108,6 +108,7 @@ button:hover img,
 }
 
 .add-project {
+  height: 34px;
   padding: 6px 4px;
   gap: 6px;
   color: var(--muted-color);
@@ -186,6 +187,8 @@ li:hover .drop-btn {
   display: flex;
   align-items: center;
   gap: 4px;
+  /* user-select: none; */
+  cursor: pointer;
 }
 
 .dropdown-content div:hover {
@@ -439,6 +442,7 @@ textarea {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  place-self: end end;
 }
 
 .add-task-form-buttons {

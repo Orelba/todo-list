@@ -18,17 +18,15 @@
   <div id="content">
     <nav>
       <ul>
-        <li>
+        <li class="today-tab">
           <img src="images/today.png" alt="Today" height="27" width="27">
           Today
         </li>
-
-        <li>
+        <li class="week-tab">
           <img src="images/week.png" alt="Week" height="27" width="27">
           This week
         </li>
-
-        <li>
+        <li class="projects-tab">
           <img src="images/folder.png" alt="Projects" height="27" width="27">
           Projects
         </li>
@@ -64,7 +62,6 @@
             Add New
           </li>
         </ul>
-
       </ul>
     </nav>
 
@@ -73,6 +70,7 @@
       <div class="main-content">
         <div class="tasks-container">
           <h2>Tasks</h2>
+
           <article class="task">
             <input type="checkbox" name="task-checkbox" id="task-checkbox">
             <button class="collapse-btn">
@@ -104,6 +102,7 @@
             </div>
             <p class="task-project-name">General<span class="bulletpoint red-bg"></span></p>
           </article>
+
           <article class="task">
             <input type="checkbox" name="task-checkbox" id="task-checkbox" checked>
             <button class="collapse-btn">
@@ -135,6 +134,7 @@
             </div>
             <p class="task-project-name">Some Project<span class="bulletpoint blue-bg"></span></p>
           </article>
+          
           <article class="task">
             <input type="checkbox" name="task-checkbox" id="task-checkbox">
             <button class="collapse-btn">
@@ -181,7 +181,7 @@
               <img src="images/priority.png" alt="Priority" height="19" width="19">
               <select name="priority-dropdown" id="priority-dropdown">
                 <option value="low">Low</option>
-                <option value="normal">Normal</option>
+                <option value="normal" selected>Normal</option>
                 <option value="high">High</option>
               </select>
             </div>
