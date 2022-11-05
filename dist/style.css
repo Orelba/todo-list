@@ -77,9 +77,10 @@ nav li,
   gap: 10px;
 }
 
-nav li:hover {
+nav li:hover:not(.projects-tab) {
   background-color: var(--main-theme-color);
   color: var(--vivid-color);
+  cursor: pointer;
 }
 
 nav li img,
@@ -88,7 +89,7 @@ button img,
   filter: invert(80%) sepia(8%) saturate(450%) hue-rotate(211deg) brightness(89%) contrast(86%);
 }
 
-nav li:hover>img,
+nav li:not(.projects-tab):hover>img,
 button:hover img,
 .dropdown-content div:hover>img {
   filter: invert(26%) sepia(45%) saturate(5716%) hue-rotate(247deg) brightness(88%) contrast(94%);
@@ -96,6 +97,12 @@ button:hover img,
 
 .project-list {
   margin-left: 40px;
+}
+
+.active,
+.active p {
+  background-color: var(--main-theme-color);
+  color: var(--vivid-color);
 }
 
 .bulletpoint {
@@ -114,6 +121,7 @@ button:hover img,
   color: var(--muted-color);
 }
 
+/* Remove bg's */
 .red-bg {
   background-color: rgb(223, 97, 97);
 }
@@ -139,6 +147,8 @@ main {
 
 .main-content {
   max-width: 1300px;
+  min-width: 500px;
+  width: inherit;
 }
 
 .tasks-container>h2 {
@@ -236,7 +246,6 @@ input[type="checkbox"]:checked::before {
 /* Task */
 .task {
   background-color: var(--secondary-theme-color);
-  min-width: 500px;
   min-height: 70px;
   border: 1px solid var(--task-border-muted-color);
   border-bottom-width: 2px;
@@ -255,7 +264,7 @@ input[type="checkbox"]:checked::before {
 }
 
 #task-checkbox,
-.task-title {
+.task-name {
   align-self: start;
 }
 
@@ -278,11 +287,11 @@ input[type="checkbox"]:checked::before {
   grid-column: 1;
 }
 
-.active {
+.rotate {
   transform: rotate(-180deg);
 }
 
-.task-title {
+.task-name {
   font-size: 1.05rem;
   margin-bottom: 4px;
 
@@ -301,7 +310,7 @@ input[type="checkbox"]:checked::before {
   grid-column: 4;
 }
 
-.task .drop-btn{
+.task .drop-btn {
   visibility: visible;
 }
 
@@ -358,6 +367,10 @@ input[type="checkbox"]:checked::before {
 .add-task-btn:hover {
   border-color: var(--vivid-color);
   color: var(--vivid-color);
+}
+
+.hidden {
+  display: none;
 }
 
 input[type="text"],

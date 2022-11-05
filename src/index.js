@@ -13,20 +13,24 @@ import Storage from './modules/storage'
 const someTask = new Task('some name', 'yada yada', 'Low')
 const otherTask = new Task('other task', 'some desc', 'Normal', '2022-10-03')
 const someTaskForToday = new Task('the today task', 'for todayyyy', 'High', '2022-11-01')
+const testOthertask = new Task('other task', 'some description', 'Normal', '2022-11-05')
 
 // Todo List
 const todoList = new TodoList()
 
 // Project
-const testProject = new Project('test project')
+const testProject = new Project('Test project')
+const otherTestProject = new Project('Other test project')
 
 // Add tasks
 testProject.addTask(someTask)
 testProject.addTask(otherTask)
 testProject.addTask(someTaskForToday)
+otherTestProject.addTask(testOthertask)
 
 // Add Project to todo list
 todoList.addProject(testProject)
+todoList.addProject(otherTestProject)
 
 // Save todo list
 Storage.saveTodoList(todoList)
@@ -48,3 +52,28 @@ Storage.updateTodayProject()
 Storage.updateWeekProject()
 
 console.log('Edited:', Storage.getTodoList())
+console.log('------------')
+
+
+// HTML TESTING
+const tasksContainer = document.querySelector('.tasks-container')
+
+// tasksContainer.appendChild(userInterface.createTask('task created', 'that works yee', 'High', 'January 7th 1999', 'General', '#DF6161'))
+
+// const projectList = document.querySelector('.project-list')
+// const addNewProjectBtn = document.querySelector('.add-project')
+
+// projectList.insertBefore(userInterface.createProject('New Project', '#5AE1C3'), addNewProjectBtn)
+// projectList.insertBefore(userInterface.createProject('Other Project', '#8ECF66'), addNewProjectBtn)
+
+const mainContent = document.querySelector('.main-content')
+
+mainContent.appendChild(userInterface.createAddTaskForm())
+
+userInterface.loadProjectContent('Test project')
+
+console.log(userInterface.getOriginProjectByTaskName('other task'))
+
+console.log(userInterface.getOriginProjectByTaskName('other task'))
+
+console.log(userInterface.getOriginProjectByTaskName('other task'))

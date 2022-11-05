@@ -50,6 +50,14 @@ export default class Project {
     })
   }
 
+  setColor(color) { // Do I need this?
+    this.color = color
+  }
+
+  getColor() {
+    return this.color
+  }
+
   static pickRandomColor() {
     const colors = [
       '#DF6161', '#5959CA', '#FF5555', '#FF8A00', '#DA9A58',
