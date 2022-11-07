@@ -6,7 +6,7 @@ import Task from './task'
 export default class userInterface {
   static loadHomePage() {
     userInterface.loadProjects()
-    userInterface.initButtons()
+    userInterface.initProjectButtons()
     userInterface.initDropdownMenus()
   }
 
@@ -29,7 +29,7 @@ export default class userInterface {
       )
   }
 
-  static getOriginProjectByTaskName(taskName) {
+  static getOriginProjectByTaskName(taskName) { // Find better way
     let originProject
 
     Storage.getTodoList()
@@ -90,6 +90,8 @@ export default class userInterface {
     const addNewProjectBtn = document.querySelector('.add-project')
 
     projectList.insertBefore(li, addNewProjectBtn)
+
+    userInterface.initProjectButtons()
   }
 
   static createTask(name, description, priority, dueDate, projectName) {
@@ -287,12 +289,26 @@ export default class userInterface {
     return dropdown
   }
 
-  static initDropdownMenus() {
-    const dropdownBtns = document.querySelectorAll('.drop-btn')
+  static clearProjects() {
+    const projectList = document.querySelector('.project-list')
+    const addProject = `
+    <li class="add-project">
+      <img src="images/plus.png" alt="Add" height="19" width="19">
+      Add New
+    </li>
+    `
+    projectList.innerHTML = addProject
+  }
 
-    dropdownBtns.forEach(btn =>
-      btn.addEventListener('click', userInterface.handleDropdowns)
-    )
+  static initDropdownMenus() {
+    const contentContainer = document.querySelector('#content')
+
+    contentContainer.addEventListener('click', function (e) {
+      if (e.target.classList.contains('drop-btn')) {
+        userInterface.handleDropdowns(e)
+      }
+    }, true)
+
     window.addEventListener('click', userInterface.closeAllDropdowns)
   }
 
@@ -307,13 +323,16 @@ export default class userInterface {
       if (menu !== dropdownContent)
         menu.classList.remove('show')
     })
+
+    // Prevent event from being fired on the project button underneath the dropdown button
+    e.stopImmediatePropagation()
+    e.stopPropagation()
   }
 
   static closeAllDropdowns(e) {
     // Close the dropdown menu if the user clicks outside of it
-    if (!e.target.matches('.drop-btn')) { // && !e.target.parentNode.contains('.dropdown-content')
+    if (!e.target.matches('.drop-btn')) {
       const dropdowns = document.getElementsByClassName('dropdown-content')
-      // console.log(e.target)
       for (let i = 0; i < dropdowns.length; i++) {
         const openDropdown = dropdowns[i]
         if (openDropdown.classList.contains('show')) {
@@ -323,12 +342,122 @@ export default class userInterface {
     }
   }
 
-  static initButtons() {
+  static initProjectButtons() {
     const todayBtn = document.querySelector('.today-tab')
     const weekBtn = document.querySelector('.week-tab')
+    const projectBtns = document.querySelectorAll('.project-btn')
+    const addProjectBtn = document.querySelector('.add-project')
 
     todayBtn.addEventListener('click', userInterface.openTodayProject)
     weekBtn.addEventListener('click', userInterface.openWeekProject)
+    projectBtns.forEach(btn =>
+      btn.addEventListener('click', userInterface.handleProjectButton)
+    )
+    addProjectBtn.addEventListener('click', userInterface.openProjectModal.bind(this, 'add'))
+  }
+
+  static initModalEvents() { 
+    const modalCancelBtn = document.querySelector('.modal-cancel-btn')
+    const modalAddProjectBtn = document.querySelector('.modal-add-project-btn')
+    const modalProjectNameInput = document.querySelector('#modal-project-name-input')
+
+    modalCancelBtn.addEventListener('click', userInterface.closeProjectModal)
+    modalAddProjectBtn.addEventListener('click', userInterface.handleAddProjectButton)
+    modalProjectNameInput.addEventListener('input', userInterface.removeModalErrorMessage)
+  }
+
+  static createModalContent(modalType) { // modalType: String, 'add' or 'edit'
+    const modalContent = document.querySelector('.modal-content')
+
+    const heading = document.createElement('h3')
+
+    const modalInputContainer = document.createElement('div')
+    modalInputContainer.classList.add('modal-input-container')
+
+    const projectNameInput = document.createElement('input')
+    projectNameInput.type = 'text'
+    projectNameInput.name = 'modal-project-name'
+    projectNameInput.id = 'modal-project-name-input'
+    projectNameInput.maxLength = 40
+
+    const modalErrorSpan = document.createElement('span')
+    modalErrorSpan.classList.add('modal-error')
+
+    const modalButtonsContainer = document.createElement('div')
+    modalButtonsContainer.classList.add('modal-buttons')
+
+    const cancelButton = document.createElement('button')
+    cancelButton.classList.add('modal-cancel-btn')
+    cancelButton.textContent = 'Cancel'
+
+    const addProjectButton = document.createElement('button')
+    addProjectButton.classList.add('modal-add-project-btn')
+
+    if (modalType === 'add') {
+      heading.textContent = 'Add new project'
+      projectNameInput.placeholder = 'Project name'
+      addProjectButton.textContent = 'Add project'
+    } else if (modalType === 'edit') {
+      heading.textContent = 'Edit project'
+      projectNameInput.placeholder = 'New project name'
+      addProjectButton.textContent = 'Edit project'
+    }
+
+    modalInputContainer.append(projectNameInput, modalErrorSpan)
+    modalButtonsContainer.append(cancelButton, addProjectButton)
+
+    userInterface.clearModalContent()
+    
+    modalContent.append(heading, modalInputContainer, modalButtonsContainer)
+
+    userInterface.initModalEvents()
+  }
+
+  static clearModalContent() {
+    const modalContent = document.querySelector('.modal-content')
+    modalContent.innerHTML = ''
+  }
+
+  static openProjectModal(modalType) {
+    const dialog = document.querySelector('.modal')
+
+    userInterface.createModalContent(modalType)
+    dialog.showModal()
+  }
+
+  static closeProjectModal() {
+    const dialog = document.querySelector('.modal')
+
+    dialog.close()
+  }
+
+  static handleAddProjectButton() {
+    const modalProjectNameInputValue = document.querySelector('#modal-project-name-input').value
+
+    if (!userInterface.validateModalProjectName(modalProjectNameInputValue)) return
+
+    userInterface.addProject(modalProjectNameInputValue)
+    userInterface.closeProjectModal()
+  }
+
+  static validateModalProjectName(projectName) {
+    const modalErrorSpan = document.querySelector('.modal-error')
+
+    if (projectName === '') {
+      modalErrorSpan.textContent = 'Project name cannot be empty!'
+      return
+    }
+    if (Storage.getTodoList().contains(projectName)) {
+      modalErrorSpan.textContent = 'Project already exists, please choose a different name!'
+      return
+    }
+
+    return true
+  }
+
+  static removeModalErrorMessage() {
+    const modalErrorSpan = document.querySelector('.modal-error')
+    modalErrorSpan.textContent = ''
   }
 
   static initTaskButtons() {
@@ -382,6 +511,21 @@ export default class userInterface {
     userInterface.initTaskButtons()
   }
 
+  static addProject(projectName) {
+    Storage.addProject(new Project(projectName))
+    const newProject = Storage.getTodoList().getProject(projectName)
+    userInterface.createProject(newProject.getName(), newProject.getColor())
+  }
+
+  static deleteProject(projectName, button) {
+    if (button.classList.contains('active')) {
+      userInterface.openProject('General', document.querySelector('.project-list').firstElementChild)
+    }
+    Storage.deleteProject(projectName)
+    userInterface.clearProjects()
+    userInterface.loadProjects()
+  }
+
   static openTodayProject() {
     Storage.updateTodayProject()
     userInterface.openProject('Today', this)
@@ -390,5 +534,13 @@ export default class userInterface {
   static openWeekProject() {
     Storage.updateWeekProject()
     userInterface.openProject('This week', this)
+  }
+
+  static handleProjectButton(e) {
+    // Pressing the dropdown edit or delete makes this trigger
+    if (e.target.classList.contains('dropdown-edit') || e.target.classList.contains('dropdown-delete')) return
+
+    const projectName = e.target.querySelector('p').textContent
+    userInterface.openProject(projectName, this)
   }
 }

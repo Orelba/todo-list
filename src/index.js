@@ -72,8 +72,8 @@ mainContent.appendChild(userInterface.createAddTaskForm())
 
 userInterface.loadProjectContent('Test project')
 
-console.log(userInterface.getOriginProjectByTaskName('other task'))
+// console.log(userInterface.getOriginProjectByTaskName('other task'))
+// console.log(userInterface.getOriginProjectByTaskName('other task'))
 
-console.log(userInterface.getOriginProjectByTaskName('other task'))
-
-console.log(userInterface.getOriginProjectByTaskName('other task'))
+// const modal = document.querySelector('dialog')
+// modal.showModal()
