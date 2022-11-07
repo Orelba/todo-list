@@ -12,8 +12,8 @@ import Storage from './modules/storage'
 // Tasks
 const someTask = new Task('some name', 'yada yada', 'Low')
 const otherTask = new Task('other task', 'some desc', 'Normal', '2022-10-03')
-const someTaskForToday = new Task('the today task', 'for todayyyy', 'High', '2022-11-01')
-const testOthertask = new Task('other task', 'some description', 'Normal', '2022-11-05')
+const someTaskForToday = new Task('the today task', 'for todayyyy', 'High', '2022-11-10')
+const testOthertask = new Task('other task', 'some description', 'Normal', '2022-11-07')
 
 // Todo List
 const todoList = new TodoList()
@@ -40,7 +40,7 @@ Storage.saveTodoList(todoList)
 console.log('Source:', Storage.getTodoList())
 
 Storage.addProject(new Project('Storage test'))
-Storage.addTask('Storage test', new Task('Test task', 'test', 'High', '2022-10-23'))
+Storage.addTask('Storage test', new Task('Test task', 'test', 'High', '2022-11-07'))
 // Storage.deleteTask('Storage test', 'Test task')
 // Storage.setTaskName('Storage test', 'Test task', 'Test task changed')
 Storage.setTaskDescription('Storage test', 'Test task', 'New Test Description')
@@ -70,10 +70,9 @@ const mainContent = document.querySelector('.main-content')
 
 mainContent.appendChild(userInterface.createAddTaskForm())
 
-userInterface.loadProjectContent('Test project')
-
 // console.log(userInterface.getOriginProjectByTaskName('other task'))
 // console.log(userInterface.getOriginProjectByTaskName('other task'))
 
 // const modal = document.querySelector('dialog')
 // modal.showModal()
+Storage.addTask('General', someTask)

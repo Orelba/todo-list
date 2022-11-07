@@ -6,8 +6,9 @@ import Task from './task'
 export default class userInterface {
   static loadHomePage() {
     userInterface.loadProjects()
-    userInterface.initProjectButtons()
+    userInterface.initButtons()
     userInterface.initDropdownMenus()
+    userInterface.openProject('General', document.querySelector('.project-list').firstElementChild)
   }
 
   static loadProjects() {
@@ -29,7 +30,7 @@ export default class userInterface {
       )
   }
 
-  static getOriginProjectByTaskName(taskName) { // Find better way
+  static getOriginProjectByTaskName(taskName) { // Find a better way
     let originProject
 
     Storage.getTodoList()
@@ -342,21 +343,26 @@ export default class userInterface {
     }
   }
 
-  static initProjectButtons() {
+  static initButtons() {
     const todayBtn = document.querySelector('.today-tab')
     const weekBtn = document.querySelector('.week-tab')
-    const projectBtns = document.querySelectorAll('.project-btn')
+
     const addProjectBtn = document.querySelector('.add-project')
 
     todayBtn.addEventListener('click', userInterface.openTodayProject)
     weekBtn.addEventListener('click', userInterface.openWeekProject)
-    projectBtns.forEach(btn =>
-      btn.addEventListener('click', userInterface.handleProjectButton)
-    )
     addProjectBtn.addEventListener('click', userInterface.openProjectModal.bind(this, 'add'))
   }
 
-  static initModalEvents() { 
+  static initProjectButtons() {
+    const projectBtns = document.querySelectorAll('.project-btn')
+
+    projectBtns.forEach(btn =>
+      btn.addEventListener('click', userInterface.handleProjectButton)
+    )
+  }
+
+  static initModalEvents() {
     const modalCancelBtn = document.querySelector('.modal-cancel-btn')
     const modalAddProjectBtn = document.querySelector('.modal-add-project-btn')
     const modalProjectNameInput = document.querySelector('#modal-project-name-input')
@@ -407,7 +413,7 @@ export default class userInterface {
     modalButtonsContainer.append(cancelButton, addProjectButton)
 
     userInterface.clearModalContent()
-    
+
     modalContent.append(heading, modalInputContainer, modalButtonsContainer)
 
     userInterface.initModalEvents()
@@ -438,6 +444,11 @@ export default class userInterface {
 
     userInterface.addProject(modalProjectNameInputValue)
     userInterface.closeProjectModal()
+
+    const projectBtns = document.querySelectorAll('.project-btn')
+    const lastAddedProjectBtn = projectBtns.item(projectBtns.length - 1)
+
+    userInterface.openProject(modalProjectNameInputValue, lastAddedProjectBtn)
   }
 
   static validateModalProjectName(projectName) {
@@ -518,9 +529,11 @@ export default class userInterface {
   }
 
   static deleteProject(projectName, button) {
+    if (projectName === 'General') return
     if (button.classList.contains('active')) {
       userInterface.openProject('General', document.querySelector('.project-list').firstElementChild)
     }
+
     Storage.deleteProject(projectName)
     userInterface.clearProjects()
     userInterface.loadProjects()
