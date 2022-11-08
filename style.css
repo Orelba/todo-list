@@ -297,6 +297,10 @@ input[type="checkbox"]:checked::before {
   grid-column: 1;
 }
 
+.collapse-btn>img{
+  pointer-events: none;
+}
+
 .rotate {
   transform: rotate(-180deg);
 }
@@ -345,6 +349,10 @@ input[type="checkbox"]:checked::before {
 .task-priority {
   font-size: 0.9rem;
   color: var(--muted-color);
+}
+
+.task-priority::first-letter {
+  text-transform: capitalize;
 }
 
 .task-due-date {
