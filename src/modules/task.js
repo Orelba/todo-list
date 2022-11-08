@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid'
+
 export default class Task {
   constructor(name, description, priority, dueDate = 'No due date') {
     this.name = name
@@ -5,6 +7,7 @@ export default class Task {
     this.priority = priority
     this.dueDate = dueDate
     this.completed = false
+    this.UUID = (this.UUID) ? this.UUID : uuidv4()
   }
 
   setName(name) {
@@ -45,6 +48,10 @@ export default class Task {
 
   isCompleted() {
     return this.completed
+  }
+
+  getUUID() {
+    return this.UUID
   }
 
   getDateFormatted() {

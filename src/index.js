@@ -9,11 +9,11 @@ import Project from './modules/project'
 import TodoList from './modules/todo-list'
 import Storage from './modules/storage'
 
-// // Tasks
-// const someTask = new Task('some name', 'yada yada', 'Low')
-// const otherTask = new Task('other task', 'some desc', 'Normal', '2022-10-03')
-// const someTaskForToday = new Task('the today task', 'for todayyyy', 'High', '2022-11-10')
-// const testOthertask = new Task('other task', 'some description', 'Normal', '2022-11-07')
+// // // Tasks
+// const someTask = new Task('some name', 'yada yada', 'low')
+// const otherTask = new Task('other task', 'some desc', 'normal', '2022-10-03')
+// const someTaskForToday = new Task('the today task', 'for todayyyy', 'high', '2022-11-10')
+// const testOthertask = new Task('other task', 'some description', 'normal', '2022-11-07')
 
 // // Todo List
 // const todoList = new TodoList()
@@ -40,11 +40,11 @@ import Storage from './modules/storage'
 // console.log('Source:', Storage.getTodoList())
 
 // Storage.addProject(new Project('Storage test'))
-// Storage.addTask('Storage test', new Task('Test task', 'test', 'High', '2022-11-07'))
+// Storage.addTask('Storage test', new Task('Test task', 'test', 'high', '2022-11-07'))
 // // Storage.deleteTask('Storage test', 'Test task')
 // // Storage.setTaskName('Storage test', 'Test task', 'Test task changed')
 // Storage.setTaskDescription('Storage test', 'Test task', 'New Test Description')
-// Storage.setTaskPriority('Storage test', 'Test task', 'Low')
+// Storage.setTaskPriority('Storage test', 'Test task', 'low')
 // Storage.setTaskDueDate('Storage test', 'Test task', '1999-01-07')
 // Storage.setTaskCompletion('Storage test', 'Test task', true)
 
@@ -58,18 +58,26 @@ import Storage from './modules/storage'
 // // HTML TESTING
 // const tasksContainer = document.querySelector('.tasks-container')
 
-// // tasksContainer.appendChild(userInterface.createTask('task created', 'that works yee', 'High', 'January 7th 1999', 'General', '#DF6161'))
+// tasksContainer.appendChild(userInterface.createTask('task created', 'that works yee', 'high', 'January 7th 1999', 'General', '#DF6161'))
 
-// // const projectList = document.querySelector('.project-list')
-// // const addNewProjectBtn = document.querySelector('.add-project')
+// const projectList = document.querySelector('.project-list')
+// const addNewProjectBtn = document.querySelector('.add-project')
 
-// // projectList.insertBefore(userInterface.createProject('New Project', '#5AE1C3'), addNewProjectBtn)
-// // projectList.insertBefore(userInterface.createProject('Other Project', '#8ECF66'), addNewProjectBtn)
+// projectList.insertBefore(userInterface.createProject('New Project', '#5AE1C3'), addNewProjectBtn)
+// projectList.insertBefore(userInterface.createProject('Other Project', '#8ECF66'), addNewProjectBtn)
 
-// // console.log(userInterface.getOriginProjectByTaskName('other task'))
-// // console.log(userInterface.getOriginProjectByTaskName('other task'))
+// console.log(userInterface.getOriginProjectByTaskName('other task'))
+// console.log(userInterface.getOriginProjectByTaskName('other task'))
 
-// // const modal = document.querySelector('dialog')
-// // modal.showModal()
+// const modal = document.querySelector('dialog')
+// modal.showModal()
 
-// Storage.deleteTask('Todo List', '')
+// Storage.deleteTask('Todo List', 'Fix Today and This week project names')
+
+// const todoList = Storage.getTodoList()
+//   .getProjects()
+//   .forEach(project =>
+//     project.getTasks().forEach(task => task))
+
+
+// console.log(Storage.getTodoList())

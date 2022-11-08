@@ -10,7 +10,7 @@ export default class userInterface {
     userInterface.initDropdownMenus()
     userInterface.initTaskCollapse()
     // userInterface.openProject('General', document.querySelector('.project-list').firstElementChild)
-    userInterface.openProject('Todo List', document.querySelector('.project-list').children[4]) // Remove
+    userInterface.openProject('Todo List', document.querySelector('.project-list').children[2]) // Remove
   }
 
   static loadProjects() {
@@ -27,18 +27,23 @@ export default class userInterface {
     Storage.getTodoList()
       .getProject(projectName)
       .getTasks()
-      .forEach(task =>
-        userInterface.createTask(task.name, task.description, task.priority, task.dueDate, projectName)
-      )
+      .forEach(task => {
+        if (projectName === 'Today' || projectName === 'This week') {
+          const OriginProjectName = userInterface.getOriginProjectByTaskUUID(task.getUUID()).getName()
+          userInterface.createTask(task.name, task.description, task.priority, task.dueDate, OriginProjectName)
+        } else {
+          userInterface.createTask(task.name, task.description, task.priority, task.dueDate, projectName)
+        }
+      })
   }
 
-  static getOriginProjectByTaskName(taskName) { // Find a better way
+  static getOriginProjectByTaskUUID(taskUUID) {
     let originProject
 
     Storage.getTodoList()
       .getProjects()
       .forEach(project => {
-        if ((project.getName() !== 'Today' || project.getName() !== 'This week') && project.getTask(taskName)) {
+        if (project.getName() !== 'Today' && project.getName() !== 'This week' && project.getTaskByUUID(taskUUID)) {
           originProject = project
         }
       })
@@ -136,6 +141,10 @@ export default class userInterface {
     taskPriority.classList.add('task-priority')
     taskPriority.textContent = `${priority} priority`
 
+    if (priority === 'low') taskPriority.style.color = '#112ba9'
+    else if (priority === 'normal') taskPriority.style.color = '#17642f'
+    else if (priority === 'high') taskPriority.style.color = '#bb0000'
+
     const taskDueDate = document.createElement('p')
     taskDueDate.classList.add('task-due-date')
     taskDueDate.textContent = userInterface.getDateFormatted(dueDate)
@@ -153,7 +162,11 @@ export default class userInterface {
 
     projectNameP.appendChild(projectBulletpoint)
 
-    article.append(checkbox, collapseBtn, taskName, dropdown, content, priorityDiv, projectNameP)
+    if (description === null) {
+      article.append(checkbox, taskName, dropdown, content, priorityDiv, projectNameP)
+    } else {
+      article.append(checkbox, collapseBtn, taskName, dropdown, content, priorityDiv, projectNameP)
+    }
 
     tasksContainer.appendChild(article)
   }
@@ -621,7 +634,7 @@ export default class userInterface {
     const taskPriority = document.querySelector('#priority-dropdown').value
     let taskDescription = document.querySelector('#add-task-form-description').value
     let taskDueDate = document.querySelector('#add-task-form-due-date').value
-    
+
     if (taskDescription === '') taskDescription = null
     if (taskDueDate === '') taskDueDate = 'No due date'
 

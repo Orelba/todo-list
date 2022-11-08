@@ -27,6 +27,10 @@ export default class Project {
     return this.tasks.find(task => task.getName() === taskName)
   }
 
+  getTaskByUUID(taskUUID) {
+    return this.tasks.find(task => task.getUUID() === taskUUID)
+  }
+
   addTask(newTask) {
     if (this.tasks.find(task => task.getName() === newTask.name)) return
     this.tasks.push(newTask)
@@ -50,7 +54,7 @@ export default class Project {
     })
   }
 
-  setColor(color) { // Do I need this?
+  setColor(color) { // Optional for adding a feature that allows changing project colors
     this.color = color
   }
 
