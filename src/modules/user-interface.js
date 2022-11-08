@@ -6,9 +6,11 @@ import Task from './task'
 export default class userInterface {
   static loadHomePage() {
     userInterface.loadProjects()
-    userInterface.initButtons()
+    userInterface.initStaticButtons()
     userInterface.initDropdownMenus()
-    userInterface.openProject('General', document.querySelector('.project-list').firstElementChild)
+    userInterface.initTaskCollapse()
+    // userInterface.openProject('General', document.querySelector('.project-list').firstElementChild)
+    userInterface.openProject('Todo List', document.querySelector('.project-list').children[4]) // Remove
   }
 
   static loadProjects() {
@@ -233,8 +235,33 @@ export default class userInterface {
 
     addTaskForm.append(taskNameInput, descriptionTextArea, dateAndPriorityContainerDiv, bottomContainerDiv)
 
-    return addTaskForm
+    const mainContent = document.querySelector('.main-content')
+    mainContent.appendChild(addTaskForm)
+
+    userInterface.initAddTaskFormButtons()
   }
+
+  static removeAddTaskForm() {
+    const addTaskForm = document.querySelector('.add-task-form')
+    addTaskForm.remove()
+  }
+
+  static initAddTaskFormButtons() {
+    const cancelBtn = document.querySelector('.add-task-form-cancel-btn')
+    const addTaskBtn = document.querySelector('.add-task-form-add-btn')
+
+    cancelBtn.addEventListener('click', userInterface.exitAddTaskForm)
+    addTaskBtn.addEventListener('click', userInterface.addTask)
+  }
+
+  static exitAddTaskForm() {
+    userInterface.removeAddTaskForm()
+    userInterface.showAddTaskButton()
+  }
+
+  // static handleAddTaskFormAddButton() {
+  //   userInterface.addTask()
+  // }
 
   static createDropdown(iconType) {
     const dropdown = document.createElement('div')
@@ -313,6 +340,16 @@ export default class userInterface {
     window.addEventListener('click', userInterface.closeAllDropdowns)
   }
 
+  static initTaskCollapse() {
+    const tasksContainer = document.querySelector('.tasks-container')
+
+    tasksContainer.addEventListener('click', function (e) {
+      if (e.target.classList.contains('collapse-btn')) {
+        userInterface.handleTaskCollapseButton(e)
+      }
+    })
+  }
+
   static handleDropdowns(e) {
     // Show dropdown
     const dropdownContent = e.target.parentElement.querySelector('.dropdown-content')
@@ -343,15 +380,31 @@ export default class userInterface {
     }
   }
 
-  static initButtons() {
+  static initStaticButtons() {
     const todayBtn = document.querySelector('.today-tab')
     const weekBtn = document.querySelector('.week-tab')
-
     const addProjectBtn = document.querySelector('.add-project')
+    const addTaskBtn = document.querySelector('.add-task-btn')
 
     todayBtn.addEventListener('click', userInterface.openTodayProject)
     weekBtn.addEventListener('click', userInterface.openWeekProject)
     addProjectBtn.addEventListener('click', userInterface.openProjectModal.bind(this, 'add'))
+    addTaskBtn.addEventListener('click', userInterface.handleAddTaskButton)
+  }
+
+  static handleAddTaskButton() {
+    userInterface.hideAddTaskButton()
+    userInterface.createAddTaskForm()
+  }
+
+  static hideAddTaskButton() {
+    const addTaskBtn = document.querySelector('.add-task-btn')
+    addTaskBtn.classList.add('hidden')
+  }
+
+  static showAddTaskButton() {
+    const addTaskBtn = document.querySelector('.add-task-btn')
+    addTaskBtn.classList.remove('hidden')
   }
 
   static initProjectButtons() {
@@ -471,38 +524,20 @@ export default class userInterface {
     modalErrorSpan.textContent = ''
   }
 
-  static initTaskButtons() {
-    const collapseBtns = document.querySelectorAll('.collapse-btn')
-
-    collapseBtns.forEach(btn =>
-      btn.addEventListener('click', userInterface.handleTaskCollapseButton)
-    )
-  }
-
-  static handleTaskCollapseButton() {
-    const content = this.parentElement.querySelector('.content')
+  static handleTaskCollapseButton(e) {
+    const content = e.target.parentElement.querySelector('.content')
 
     if (content.style.maxHeight) {
-      this.classList.remove('rotate')
+      e.target.classList.remove('rotate')
       content.style.maxHeight = null
       content.style.marginBottom = null
     } else {
       if (content.childNodes.length !== 0) {
-        this.classList.add('rotate')
+        e.target.classList.add('rotate')
         content.style.maxHeight = content.scrollHeight + 'px'
         content.style.marginBottom = '4px'
       }
     }
-  }
-
-  static hideAddTaskButton() {
-    const addTaskBtn = document.querySelector('.add-task-btn')
-    addTaskBtn.classList.add('hidden')
-  }
-
-  static showAddTaskButton() {
-    const addTaskBtn = document.querySelector('.add-task-btn')
-    addTaskBtn.classList.remove('hidden')
   }
 
   static openProject(projectName, projectButton) {
@@ -513,13 +548,14 @@ export default class userInterface {
 
     userInterface.loadProjectContent(projectName)
 
+    if (document.querySelector('.add-task-form')) userInterface.removeAddTaskForm()
+
     if (projectName === 'Today' || projectName === 'This week') {
       userInterface.hideAddTaskButton()
     } else {
       userInterface.showAddTaskButton()
     }
 
-    userInterface.initTaskButtons()
   }
 
   static addProject(projectName) {
@@ -555,5 +591,46 @@ export default class userInterface {
 
     const projectName = e.target.querySelector('p').textContent
     userInterface.openProject(projectName, this)
+  }
+
+  static validateAddTaskForm(formType, taskElement = null) { // formType: String, 'add' or 'edit'
+    const projectName = document.querySelector('.main-heading').textContent
+    const taskName = document.querySelector('#add-task-form-task-name').value
+    let taskDescription = document.querySelector('#add-task-form-description').value
+
+    if (taskName === '') {
+      // make 'task name cannot be empty' error message
+      return
+    }
+
+    if (formType === 'add') {
+      if (Storage.getTodoList().getProject(projectName).getTask(taskName)) {
+        // make 'task name already exists' error message
+        console.error('Task name already exists')
+        return
+      }
+    } else if (formType === 'edit') {
+      // get original task name from TaskElement and only approve same task name if it's the same task being edited
+    }
+    return true
+  }
+
+  static addTask() {
+    const projectName = document.querySelector('.main-heading').textContent
+    const taskName = document.querySelector('#add-task-form-task-name').value
+    const taskPriority = document.querySelector('#priority-dropdown').value
+    let taskDescription = document.querySelector('#add-task-form-description').value
+    let taskDueDate = document.querySelector('#add-task-form-due-date').value
+    
+    if (taskDescription === '') taskDescription = null
+    if (taskDueDate === '') taskDueDate = 'No due date'
+
+    if (!userInterface.validateAddTaskForm('add')) return
+
+    Storage.addTask(projectName, new Task(taskName, taskDescription, taskPriority, taskDueDate))
+
+    userInterface.createTask(taskName, taskDescription, taskPriority, taskDueDate, projectName)
+
+    userInterface.exitAddTaskForm()
   }
 }
