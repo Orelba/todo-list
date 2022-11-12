@@ -54,10 +54,6 @@ export default class Project {
     })
   }
 
-  setColor(color) { // Optional for adding a feature that allows changing project colors
-    this.color = color
-  }
-
   getColor() {
     return this.color
   }

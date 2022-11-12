@@ -152,7 +152,7 @@ main {
 
 .main-content {
   max-width: 1300px;
-  min-width: 500px;
+  min-width: 320px;
   width: inherit;
 }
 
@@ -297,7 +297,7 @@ input[type="checkbox"]:checked::before {
   grid-column: 1;
 }
 
-.collapse-btn>img{
+.collapse-btn>img {
   pointer-events: none;
 }
 
@@ -332,6 +332,7 @@ input[type="checkbox"]:checked::before {
   font-size: 0.9rem;
   max-height: 0;
   overflow: hidden;
+  white-space: pre-wrap;
   transition: max-height 0.22s ease-out;
   background-color: var(--secondary-theme-color);
 
@@ -388,7 +389,7 @@ input[type="checkbox"]:checked::before {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 input[type="text"],
@@ -436,6 +437,23 @@ input[type="date"]::-webkit-datetime-edit {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.add-task-form-error-field {
+  background-color: #ff00006e;
+  border-radius: var(--default-radius);
+  height: 32px;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  gap: 5px;
+}
+
+.add-task-form-error-text {
+  font-size: 0.8rem;
+  color: white;
 }
 
 #add-task-form-task-name {

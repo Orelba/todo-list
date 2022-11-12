@@ -80,4 +80,8 @@ import Storage from './modules/storage'
 //     project.getTasks().forEach(task => task))
 
 
-// console.log(Storage.getTodoList())
+console.log(Storage.getTodoList())
+
+// const todoList = Storage.getTodoList()
+// todoList.getProject('Todo List').getTaskByUUID('33b66299-bacf-4848-9b13-0c124fd4a9eb')
+// Storage.saveTodoList(todoList)

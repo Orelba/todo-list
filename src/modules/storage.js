@@ -53,33 +53,33 @@ export default class Storage {
     Storage.saveTodoList(todoList)
   }
 
-  static setTaskName(projectName, taskName, newTaskName) {
+  static setTaskName(projectName, taskUUID, newTaskName) {
     const todoList = Storage.getTodoList()
-    todoList.getProject(projectName).getTask(taskName).setName(newTaskName)
+    todoList.getProject(projectName).getTaskByUUID(taskUUID).setName(newTaskName)
     Storage.saveTodoList(todoList)
   }
 
-  static setTaskDescription(projectName, taskName, newTaskDescription) {
+  static setTaskDescription(projectName, taskUUID, newTaskDescription) {
     const todoList = Storage.getTodoList()
-    todoList.getProject(projectName).getTask(taskName).setDescription(newTaskDescription)
+    todoList.getProject(projectName).getTaskByUUID(taskUUID).setDescription(newTaskDescription)
     Storage.saveTodoList(todoList)
   }
 
-  static setTaskPriority(projectName, taskName, newTaskPriorityLevel) {
+  static setTaskPriority(projectName, taskUUID, newTaskPriorityLevel) {
     const todoList = Storage.getTodoList()
-    todoList.getProject(projectName).getTask(taskName).setPriority(newTaskPriorityLevel)
+    todoList.getProject(projectName).getTaskByUUID(taskUUID).setPriority(newTaskPriorityLevel)
     Storage.saveTodoList(todoList)
   }
 
-  static setTaskDueDate(projectName, taskName, newTaskDueDate) {
+  static setTaskDueDate(projectName, taskUUID, newTaskDueDate) {
     const todoList = Storage.getTodoList()
-    todoList.getProject(projectName).getTask(taskName).setDueDate(newTaskDueDate)
+    todoList.getProject(projectName).getTaskByUUID(taskUUID).setDueDate(newTaskDueDate)
     Storage.saveTodoList(todoList)
   }
 
-  static setTaskCompletion(projectName, taskName, completionState) {
+  static setTaskCompletion(projectName, taskUUID, completionState) {
     const todoList = Storage.getTodoList()
-    todoList.getProject(projectName).getTask(taskName).setCompletion(completionState)
+    todoList.getProject(projectName).getTaskByUUID(taskUUID).setCompletion(completionState)
     Storage.saveTodoList(todoList)
   }
 
