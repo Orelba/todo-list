@@ -126,15 +126,6 @@ button:hover img,
   color: var(--muted-color);
 }
 
-/* Remove bg's */
-.red-bg {
-  background-color: rgb(223, 97, 97);
-}
-
-.blue-bg {
-  background-color: rgb(89, 89, 202);
-}
-
 main {
   width: 100%;
   padding: 30px 20px;
@@ -166,6 +157,7 @@ main {
   background-color: inherit;
   height: 15px;
   width: 15px;
+  border-radius: initial;
 
   display: flex;
   justify-content: center;
