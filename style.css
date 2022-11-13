@@ -6,6 +6,13 @@
   --muted-color: rgb(178, 174, 194);
   --task-border-muted-color: rgb(235, 235, 239);
   --default-radius: 12px;
+
+  /* --text-color: rgb(221 221 221);
+  --main-theme-color: rgb(17 19 22);
+  --secondary-theme-color: rgb(28 30 36);
+  --vivid-color: rgb(221 221 221);
+  --muted-color: rgb(178, 174, 194);
+  --task-border-muted-color: rgb(43 43 52); */
 }
 
 * {
@@ -446,6 +453,7 @@ input[type="date"]::-webkit-datetime-edit {
 }
 
 #add-task-form-task-name {
+  background-color: var(--secondary-theme-color);
   height: 32px;
   width: 100%;
   border: 1px solid var(--task-border-muted-color);
@@ -453,6 +461,7 @@ input[type="date"]::-webkit-datetime-edit {
 }
 
 textarea {
+  background-color: var(--secondary-theme-color);
   padding: 8px 10px;
   border: 1px solid var(--task-border-muted-color);
   resize: none;
@@ -474,6 +483,10 @@ textarea {
   border: 1px solid var(--task-border-muted-color);
   border-radius: var(--default-radius);
   height: 32px;
+}
+
+#priority-dropdown option {
+  background-color: var(--secondary-theme-color);
 }
 
 .add-task-form-bottom-container {
