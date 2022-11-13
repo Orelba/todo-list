@@ -10,6 +10,7 @@ export default class userInterface {
     userInterface.initDropdownMenus()
     userInterface.initTaskCollapse()
     userInterface.initTaskCheckboxEvents()
+    userInterface.initModalBackdropEvent()
     // userInterface.openProject('General', document.querySelector('.project-list').firstElementChild)
     userInterface.openProject('Todo List', document.querySelector('.project-list').children[2]) // Remove
   }
@@ -523,6 +524,20 @@ export default class userInterface {
     )
   }
 
+  static initModalBackdropEvent() {
+    const dialog = document.getElementsByTagName('dialog')[0]
+
+    dialog.addEventListener('click', function (event) {
+      const rect = dialog.getBoundingClientRect()
+      const isInDialog = (rect.top <= event.clientY && event.clientY <= rect.top + rect.height
+        && rect.left <= event.clientX && event.clientX <= rect.left + rect.width)
+      if (!isInDialog) {
+        dialog.close()
+        console.log('click')
+      }
+    })
+  }
+
   static initAddModalEvents() {
     const modalCancelBtn = document.querySelector('.modal-cancel-btn')
     const modalAddProjectBtn = document.querySelector('.modal-add-project-btn')
@@ -543,7 +558,7 @@ export default class userInterface {
     modalProjectNameInput.addEventListener('input', userInterface.removeModalErrorMessage)
   }
 
-  static createModalContent(modalType) { // modalType: String, 'add' or 'edit'
+  static createModalContent(modalType) {
     const modalContent = document.querySelector('.modal-content')
 
     const heading = document.createElement('h3')
