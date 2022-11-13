@@ -449,7 +449,7 @@ export default class userInterface {
     if (e.target.closest('.task')) {
       userInterface.openEditTaskForm(e.target.closest('.task'))
     } else if (e.target.closest('.project-btn')) {
-      // Edit project name logic
+      userInterface.openProjectModal('edit', e.target.closest('.project-btn'))
     }
   }
 
@@ -520,13 +520,23 @@ export default class userInterface {
     )
   }
 
-  static initModalEvents() {
+  static initAddModalEvents() {
     const modalCancelBtn = document.querySelector('.modal-cancel-btn')
     const modalAddProjectBtn = document.querySelector('.modal-add-project-btn')
     const modalProjectNameInput = document.querySelector('#modal-project-name-input')
 
     modalCancelBtn.addEventListener('click', userInterface.closeProjectModal)
     modalAddProjectBtn.addEventListener('click', userInterface.handleAddProjectButton)
+    modalProjectNameInput.addEventListener('input', userInterface.removeModalErrorMessage)
+  }
+
+  static initEditModalEvents(sourceProjectName, button) {
+    const modalCancelBtn = document.querySelector('.modal-cancel-btn')
+    const modalAddProjectBtn = document.querySelector('.modal-add-project-btn')
+    const modalProjectNameInput = document.querySelector('#modal-project-name-input')
+
+    modalCancelBtn.addEventListener('click', userInterface.closeProjectModal)
+    modalAddProjectBtn.addEventListener('click', userInterface.handleEditProjectButton.bind(this, sourceProjectName, button))
     modalProjectNameInput.addEventListener('input', userInterface.removeModalErrorMessage)
   }
 
@@ -573,8 +583,6 @@ export default class userInterface {
     userInterface.clearModalContent()
 
     modalContent.append(heading, modalInputContainer, modalButtonsContainer)
-
-    userInterface.initModalEvents()
   }
 
   static clearModalContent() {
@@ -582,10 +590,20 @@ export default class userInterface {
     modalContent.innerHTML = ''
   }
 
-  static openProjectModal(modalType) {
+  static openProjectModal(modalType, projectElement = null) {
     const dialog = document.querySelector('.modal')
 
     userInterface.createModalContent(modalType)
+
+    if (modalType === 'add') {
+      userInterface.initAddModalEvents()
+    } else if (modalType === 'edit') {
+      const projectName = projectElement.querySelector('p').textContent
+      const projectNameInput = document.querySelector('#modal-project-name-input')
+      projectNameInput.value = projectName
+      userInterface.initEditModalEvents(projectName, projectElement)
+    }
+
     dialog.showModal()
   }
 
@@ -595,30 +613,24 @@ export default class userInterface {
     dialog.close()
   }
 
-  static handleAddProjectButton() {
-    const modalProjectNameInputValue = (document.querySelector('#modal-project-name-input').value).trim()
-
-    if (!userInterface.validateModalProjectName(modalProjectNameInputValue)) return
-
-    userInterface.addProject(modalProjectNameInputValue)
-    userInterface.closeProjectModal()
-
-    const projectBtns = document.querySelectorAll('.project-btn')
-    const lastAddedProjectBtn = projectBtns.item(projectBtns.length - 1)
-
-    userInterface.openProject(modalProjectNameInputValue, lastAddedProjectBtn)
-  }
-
-  static validateModalProjectName(projectName) {
+  static validateModalProjectName(modalType, projectName, buttonProjectName = null) {
     const modalErrorSpan = document.querySelector('.modal-error')
 
     if (projectName === '') {
       modalErrorSpan.textContent = 'Project name cannot be empty!'
       return
     }
-    if (Storage.getTodoList().contains(projectName)) {
-      modalErrorSpan.textContent = 'Project already exists, please choose a different name!'
-      return
+
+    if (modalType === 'add') {
+      if (Storage.getTodoList().contains(projectName)) {
+        modalErrorSpan.textContent = 'Project already exists, please choose a different name!'
+        return
+      }
+    } else if (modalType === 'edit') {
+      if (Storage.getTodoList().contains(projectName) && projectName !== buttonProjectName) {
+        modalErrorSpan.textContent = 'Project already exists, please choose a different name!'
+        return
+      }
     }
 
     return true
@@ -627,6 +639,33 @@ export default class userInterface {
   static removeModalErrorMessage() {
     const modalErrorSpan = document.querySelector('.modal-error')
     modalErrorSpan.textContent = ''
+  }
+
+  static handleAddProjectButton() {
+    const projectNameInputValue = (document.querySelector('#modal-project-name-input').value).trim()
+
+    if (!userInterface.validateModalProjectName('add', projectNameInputValue)) return
+
+    userInterface.addProject(projectNameInputValue)
+    userInterface.closeProjectModal()
+
+    const projectBtns = document.querySelectorAll('.project-btn')
+    const lastAddedProjectBtn = projectBtns.item(projectBtns.length - 1)
+
+    userInterface.openProject(projectNameInputValue, lastAddedProjectBtn)
+  }
+
+  static handleEditProjectButton(projectName, button) {
+    const projectNameInputValue = (document.querySelector('#modal-project-name-input').value).trim()
+    const projectButtonName = button.querySelector('p')
+
+    if (!userInterface.validateModalProjectName('edit', projectNameInputValue, projectButtonName.textContent)) return
+
+    Storage.setProjectName(projectName, projectNameInputValue)
+
+    projectButtonName.textContent = projectNameInputValue
+    userInterface.closeProjectModal()
+    userInterface.loadProjectContent(projectNameInputValue)
   }
 
   static handleTaskCollapseButton(e) {
@@ -669,17 +708,6 @@ export default class userInterface {
     Storage.addProject(new Project(projectName))
     const newProject = Storage.getTodoList().getProject(projectName)
     userInterface.createProject(newProject.getName(), newProject.getColor())
-  }
-
-  static deleteProject(projectName, button) {
-    if (projectName === 'General') return
-    if (button.classList.contains('active')) {
-      userInterface.openProject('General', document.querySelector('.project-list').firstElementChild)
-    }
-
-    Storage.deleteProject(projectName)
-    userInterface.clearProjects()
-    userInterface.loadProjects()
   }
 
   static openTodayProject() {

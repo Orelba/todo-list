@@ -148,6 +148,7 @@ main {
 .main-heading {
   color: var(--vivid-color);
   text-align: center;
+  overflow-wrap: anywhere;
 }
 
 .main-content {
