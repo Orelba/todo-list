@@ -9,33 +9,6 @@ import Project from './modules/project'
 import TodoList from './modules/todo-list'
 import Storage from './modules/storage'
 
-// // // Tasks
-// const someTask = new Task('some name', 'yada yada', 'low')
-// const otherTask = new Task('other task', 'some desc', 'normal', '2022-10-03')
-// const someTaskForToday = new Task('the today task', 'for todayyyy', 'high', '2022-11-10')
-// const testOthertask = new Task('other task', 'some description', 'normal', '2022-11-07')
-
-// // Todo List
-// const todoList = new TodoList()
-
-// // Project
-// const testProject = new Project('Test project')
-// const otherTestProject = new Project('Other test project')
-
-// // Add tasks
-// testProject.addTask(someTask)
-// testProject.addTask(otherTask)
-// testProject.addTask(someTaskForToday)
-// otherTestProject.addTask(testOthertask)
-
-// // Add Project to todo list
-// todoList.addProject(testProject)
-// todoList.addProject(otherTestProject)
-
-// // Save todo list
-// Storage.saveTodoList(todoList)
-
-
 // // STORAGE TESTING
 // console.log('Source:', Storage.getTodoList())
 

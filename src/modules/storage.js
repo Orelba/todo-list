@@ -83,9 +83,9 @@ export default class Storage {
     Storage.saveTodoList(todoList)
   }
 
-  static setTaskCompletion(projectName, taskUUID, completionState) {
+  static setTaskCompletion(projectName, taskName, completionState) {
     const todoList = Storage.getTodoList()
-    todoList.getProject(projectName).getTaskByUUID(taskUUID).setCompletion(completionState)
+    todoList.getProject(projectName).getTask(taskName).setCompletion(completionState)
     Storage.saveTodoList(todoList)
   }
 

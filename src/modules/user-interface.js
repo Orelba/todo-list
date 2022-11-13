@@ -9,6 +9,7 @@ export default class userInterface {
     userInterface.initStaticButtons()
     userInterface.initDropdownMenus()
     userInterface.initTaskCollapse()
+    userInterface.initTaskCheckboxEvents()
     // userInterface.openProject('General', document.querySelector('.project-list').firstElementChild)
     userInterface.openProject('Todo List', document.querySelector('.project-list').children[2]) // Remove
   }
@@ -30,9 +31,9 @@ export default class userInterface {
       .forEach(task => {
         if (projectName === 'Today' || projectName === 'This week') {
           const OriginProjectName = userInterface.getOriginProjectByTaskUUID(task.getUUID()).getName()
-          userInterface.createTask(task.name, task.description, task.priority, task.dueDate, OriginProjectName)
+          userInterface.createTask(task.name, task.description, task.priority, task.dueDate, OriginProjectName, task.completed)
         } else {
-          userInterface.createTask(task.name, task.description, task.priority, task.dueDate, projectName)
+          userInterface.createTask(task.name, task.description, task.priority, task.dueDate, projectName, task.completed)
         }
       })
   }
@@ -102,16 +103,17 @@ export default class userInterface {
     userInterface.initProjectButtons()
   }
 
-  static createTask(name, description, priority, dueDate, projectName) {
+  static createTask(name, description, priority, dueDate, projectName, isCompleted = false) {
     const tasksContainer = document.querySelector('.tasks-container')
 
     const article = document.createElement('article')
     article.classList.add('task')
 
     const checkbox = document.createElement('input')
+    checkbox.classList.add('task-checkbox')
     checkbox.type = 'checkbox'
     checkbox.name = 'task-checkbox'
-    checkbox.id = 'task-checkbox'
+    checkbox.checked = isCompleted
 
     const collapseBtn = document.createElement('button')
     collapseBtn.classList.add('collapse-btn')
@@ -127,6 +129,7 @@ export default class userInterface {
     const taskName = document.createElement('h3')
     taskName.classList.add('task-name')
     taskName.textContent = name
+    if (isCompleted) taskName.style.textDecoration = 'line-through'
 
     const dropdown = userInterface.createDropdown('horizontal')
 
@@ -742,7 +745,7 @@ export default class userInterface {
     formError.classList.add('hidden')
   }
 
-  static validateTaskForm(formType, taskUUID = null) { // formType: String, 'add' or 'edit'
+  static validateTaskForm(formType, taskUUID = null) {
     const projectName = document.querySelector('.main-heading').textContent
     const taskName = (document.querySelector('#add-task-form-task-name').value).trim()
 
@@ -833,5 +836,30 @@ export default class userInterface {
     Storage.updateWeekProject()
     userInterface.loadProjectContent(currentlyOpenedProjectName)
     userInterface.exitTaskForm()
+  }
+
+  static initTaskCheckboxEvents() {
+    const tasksContainer = document.querySelector('.tasks-container')
+
+    tasksContainer.addEventListener('click', e => {
+      if (e.target.classList.contains('task-checkbox')) {
+        userInterface.setTaskCompletionState(e.target.parentElement)
+      }
+    })
+  }
+
+  static setTaskCompletionState(taskElement) {
+    const taskName = taskElement.querySelector('.task-name')
+    const projectName = taskElement.querySelector('.task-project-name').textContent
+    const isTaskCompleted = Storage.getTodoList().getProject(projectName).getTask(taskName.textContent).isCompleted()
+
+    if (isTaskCompleted) {
+      Storage.setTaskCompletion(projectName, taskName.textContent, false)
+      taskName.style.textDecoration = null
+    } else {
+      Storage.setTaskCompletion(projectName, taskName.textContent, true)
+      taskName.style.textDecoration = 'line-through'
+    }
+
   }
 }

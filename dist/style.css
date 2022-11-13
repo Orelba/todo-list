@@ -261,17 +261,17 @@ input[type="checkbox"]:checked::before {
   grid-template: 1fr auto auto / 60px repeat(2, 1fr) 20px;
 }
 
-#task-checkbox,
+.task-checkbox,
 .task-project-name {
   align-self: center;
 }
 
-#task-checkbox,
+.task-checkbox,
 .task-name {
   align-self: start;
 }
 
-#task-checkbox {
+.task-checkbox {
   justify-self: center;
   margin-top: 2px;
 
@@ -304,10 +304,6 @@ input[type="checkbox"]:checked::before {
 
   grid-row: 1;
   grid-column: 2 / 4;
-}
-
-.line-through {
-  text-decoration: line-through;
 }
 
 .task .dropdown {
