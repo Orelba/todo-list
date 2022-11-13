@@ -270,7 +270,7 @@ export default class userInterface {
 
   static removeTaskForm() {
     const TaskForm = document.querySelector('.add-task-form')
-    TaskForm.remove()
+    if (TaskForm) TaskForm.remove()
   }
 
   static exitTaskForm() {
@@ -596,7 +596,7 @@ export default class userInterface {
   }
 
   static handleAddProjectButton() {
-    const modalProjectNameInputValue = document.querySelector('#modal-project-name-input').value
+    const modalProjectNameInputValue = (document.querySelector('#modal-project-name-input').value).trim()
 
     if (!userInterface.validateModalProjectName(modalProjectNameInputValue)) return
 
@@ -716,7 +716,7 @@ export default class userInterface {
 
   static validateTaskForm(formType, taskUUID = null) { // formType: String, 'add' or 'edit'
     const projectName = document.querySelector('.main-heading').textContent
-    const taskName = document.querySelector('#add-task-form-task-name').value
+    const taskName = (document.querySelector('#add-task-form-task-name').value).trim()
 
     if (taskName === '') {
       userInterface.showTaskFormError('Task name cannot be empty!')
@@ -745,9 +745,9 @@ export default class userInterface {
 
   static addTask() {
     const projectName = document.querySelector('.main-heading').textContent
-    const taskName = document.querySelector('#add-task-form-task-name').value
+    const taskName = (document.querySelector('#add-task-form-task-name').value).trim()
     const taskPriority = document.querySelector('#priority-dropdown').value
-    let taskDescription = document.querySelector('#add-task-form-description').value
+    let taskDescription = (document.querySelector('#add-task-form-description').value).trim()
     let taskDueDate = document.querySelector('#add-task-form-due-date').value
 
     if (taskDescription === '') taskDescription = null
@@ -780,9 +780,9 @@ export default class userInterface {
   }
 
   static editTask(taskUUID) {
-    const formTaskName = document.querySelector('#add-task-form-task-name').value
+    const formTaskName = (document.querySelector('#add-task-form-task-name').value).trim()
     const formTaskPriority = document.querySelector('#priority-dropdown').value
-    let formTaskDescription = document.querySelector('#add-task-form-description').value
+    let formTaskDescription = (document.querySelector('#add-task-form-description').value).trim()
     let formTaskDueDate = document.querySelector('#add-task-form-due-date').value
 
     if (formTaskDescription === '') formTaskDescription = null
