@@ -853,6 +853,9 @@ export default class userInterface {
     userInterface.createTaskForm()
     userInterface.populateEditTaskForm(taskName, taskDescription, taskDueDate, taskPriority)
     userInterface.initEditTaskFormEvents(taskUUID)
+
+    const form = document.querySelector('.add-task-form')
+    form.scrollIntoView({ behavior: 'smooth' , block: 'end'})
   }
 
   static editTask(taskUUID) {
