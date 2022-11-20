@@ -466,12 +466,18 @@ export default class userInterface {
       }
     })
 
-    // When window is resized: resize collapsed content height to fit
     window.addEventListener('resize', () => {
+      // When window is resized: resize collapsed content height to fit
       const collapsedContent = document.querySelectorAll('.collapsed')
       collapsedContent.forEach((content) => {
         content.style.maxHeight = content.scrollHeight + 'px'
       })
+
+      // Fix body height 100vh bug on mobile phones by setting the height on resize
+      let deviceWidth = window.matchMedia("(max-width: 1024px)")
+      if (deviceWidth.matches) {
+        document.querySelector('body').style.height = window.innerHeight + "px"
+      }
     })
   }
 
@@ -855,7 +861,7 @@ export default class userInterface {
     userInterface.initEditTaskFormEvents(taskUUID)
 
     const form = document.querySelector('.add-task-form')
-    form.scrollIntoView({ behavior: 'smooth' , block: 'end'})
+    form.scrollIntoView({ behavior: 'smooth', block: 'end' })
   }
 
   static editTask(taskUUID) {
