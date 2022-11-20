@@ -7,6 +7,7 @@ export default class userInterface {
   static loadHomePage() {
     userInterface.loadTheme()
     userInterface.loadProjects()
+    userInterface.initDynamicBodyHeightAdjustment()
     userInterface.initStaticButtons()
     userInterface.initDropdownMenus()
     userInterface.initTaskCollapse()
@@ -457,6 +458,21 @@ export default class userInterface {
     }
   }
 
+  static initDynamicBodyHeightAdjustment() { // A 'height: 100vh' on body bug solution for mobile devices
+    // Set initial Height
+    document.querySelector('body').style.height = window.innerHeight + "px"
+    
+    // Fix body height 100vh bug on mobile phones by setting the height on resize
+    window.addEventListener('resize', () => {
+      let deviceWidth = window.matchMedia("(max-width: 1024px)")
+      if (deviceWidth.matches) {
+        document.querySelector('body').style.height = window.innerHeight + "px"
+      } else {
+        document.querySelector('body').style.height = '100vh'
+      }
+    })
+  }
+
   static initTaskCollapse() {
     const tasksContainer = document.querySelector('.tasks-container')
 
@@ -466,18 +482,12 @@ export default class userInterface {
       }
     })
 
+    // When window is resized: resize collapsed content height to fit
     window.addEventListener('resize', () => {
-      // When window is resized: resize collapsed content height to fit
       const collapsedContent = document.querySelectorAll('.collapsed')
       collapsedContent.forEach((content) => {
         content.style.maxHeight = content.scrollHeight + 'px'
       })
-
-      // Fix body height 100vh bug on mobile phones by setting the height on resize
-      let deviceWidth = window.matchMedia("(max-width: 1024px)")
-      if (deviceWidth.matches) {
-        document.querySelector('body').style.height = window.innerHeight + "px"
-      }
     })
   }
 
