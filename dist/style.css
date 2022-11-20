@@ -301,7 +301,6 @@ main {
 }
 
 .main-content {
-  height: 100%;
   max-width: 1300px;
   min-width: 320px;
   width: inherit;
