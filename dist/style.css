@@ -292,6 +292,8 @@ main {
   flex-direction: column;
   align-items: center;
   overflow-y: auto;
+
+  position: relative;
 }
 
 .main-heading {
