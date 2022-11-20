@@ -8,6 +8,7 @@
   --low-priority-color: rgb(17, 43, 169);
   --normal-priority-color: rgb(23, 100, 47);
   --high-priority-color: rgb(187, 0, 0);
+  --footer-bg: rgba(255, 255, 255, .8);
   --delete-color: rgb(231, 0, 0);
 
   --topbar-height: 60px;
@@ -24,6 +25,7 @@
   --low-priority-color: rgb(116, 132, 211);
   --normal-priority-color: rgb(98, 167, 120);
   --high-priority-color: rgb(235, 86, 86);
+  --footer-bg: rgba(28, 30, 36, .8);
   --delete-color: rgb(191, 0, 0);
 
   color-scheme: dark;
@@ -174,7 +176,6 @@ button {
 }
 
 input:checked+.slider {
-  /* background-color: #66bb6a; */
   background-color: var(--vivid-color);
 }
 
@@ -205,13 +206,17 @@ nav {
   width: 0;
   height: 100%;
   background-color: var(--secondary-theme-color);
-  flex-shrink: 0;
   transition: width .5s, left .5s;
   overflow-y: auto;
+  overflow-x: hidden;
 
   position: relative;
   left: -325px;
   z-index: 2;
+}
+
+nav * {
+  flex-shrink: 0;
 }
 
 nav>ul {
@@ -722,10 +727,6 @@ textarea {
   left: 0px;
 }
 
-/* .modal-project-delete-warning {
-  color: var(--delete-color);
-} */
-
 .modal-buttons {
   display: flex;
   gap: 20px;
@@ -759,6 +760,32 @@ textarea {
   margin-top: auto;
 }
 
+/* Footer */
+.github-link {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+}
+
+.github-link a {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: .7;
+  transition: all 0.17s;
+  text-decoration: none;
+}
+
+.github-link a:hover {
+  opacity: 1;
+}
+
+.github-link a:is(:link, :visited) {
+  color: var(--text-color);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
 /* Breakpoints */
 
 /* Large devices (laptops/desktops, 992px and down) */
@@ -786,6 +813,39 @@ textarea {
   .theme-switch-wrapper,
   .hamburger-lines {
     transform: scale(0.86);
+  }
+
+  main {
+    padding: 30px;
+  }
+
+  .github-link {
+    text-align: center;
+    margin-top: 15px;
+    height: 24px;
+    background-color: var(--footer-bg);
+    border-top: 1px solid var(--task-border-muted-color);
+    
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .github-link a {
+    font-weight: 300 !important;
+    justify-content: center;
+    flex-direction: row;
+    opacity: 1;
+  }
+
+  .github-link a::after {
+    content: '\00a0on Github';
+  }
+
+  .github-link a img {
+    margin-right: 7px;
+    height: 20px;
+    width: 20px;
   }
 }
 

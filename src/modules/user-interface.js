@@ -13,8 +13,7 @@ export default class userInterface {
     userInterface.initTaskCheckboxEvents()
     userInterface.initModalBackdropEvent()
     userInterface.initNavbar()
-    // userInterface.openProject('General', document.querySelector('.project-list').firstElementChild)
-    userInterface.openProject('Todo List', document.querySelector('.project-list').children[2]) // Remove
+    userInterface.openProject('General', document.querySelector('.project-list').firstElementChild)
   }
 
   static loadProjects() {
@@ -733,6 +732,9 @@ export default class userInterface {
     } else {
       userInterface.showAddTaskButton()
     }
+
+    // TODO: if .task doesn't exist in .tasks-container, add empty page placeholder element
+    // Remember to remove placeholder element when a task is created
   }
 
   static addProject(projectName) {
