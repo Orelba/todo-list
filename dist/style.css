@@ -5,14 +5,32 @@
   --vivid-color: rgb(99, 62, 218);
   --muted-color: rgb(178, 174, 194);
   --task-border-muted-color: rgb(235, 235, 239);
-  --default-radius: 12px;
+  --low-priority-color: rgb(17, 43, 169);
+  --normal-priority-color: rgb(23, 100, 47);
+  --high-priority-color: rgb(187, 0, 0);
+  --delete-color: rgb(231, 0, 0);
 
-  /* --text-color: rgb(221 221 221);
-  --main-theme-color: rgb(17 19 22);
-  --secondary-theme-color: rgb(28 30 36);
-  --vivid-color: rgb(221 221 221);
-  --muted-color: rgb(178, 174, 194);
-  --task-border-muted-color: rgb(43 43 52); */
+  --topbar-height: 60px;
+  --default-radius: 12px;
+}
+
+[data-theme="dark"] {
+  --text-color: rgb(221, 221, 221);
+  --main-theme-color: rgb(17, 19, 22);
+  --secondary-theme-color: rgb(28, 30, 36);
+  /* --vivid-color: rgb(136, 98, 255); */
+  --muted-color: rgb(156, 154, 167);
+  --task-border-muted-color: rgb(43, 43, 52);
+  --low-priority-color: rgb(116, 132, 211);
+  --normal-priority-color: rgb(98, 167, 120);
+  --high-priority-color: rgb(235, 86, 86);
+  --delete-color: rgb(191, 0, 0);
+
+  color-scheme: dark;
+}
+
+[data-theme="dark"] .priority-dropdown-container img {
+  filter: invert(98%) sepia(0%) saturate(891%) hue-rotate(252deg) brightness(116%) contrast(73%);
 }
 
 * {
@@ -26,13 +44,14 @@ html {
 }
 
 html * {
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Montserrat', sans-serif;
   color: var(--text-color);
 }
 
 body {
   background-color: var(--main-theme-color);
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 img {
@@ -47,8 +66,134 @@ button {
   font-weight: 600;
 }
 
+.top-bar {
+  width: 100vw;
+  height: var(--topbar-height);
+  background-color: var(--secondary-theme-color);
+  border-bottom: 1px solid var(--task-border-muted-color);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 27px;
+
+  position: sticky;
+  top: 0;
+
+  z-index: 999;
+}
+
+/* Hamburger Menu Switch */
+.hamburger-lines {
+  height: 26px;
+  width: 32px;
+  cursor: pointer;
+  user-select: none;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  z-index: 10;
+}
+
+.hamburger-lines .line {
+  display: block;
+  height: 4px;
+  width: 100%;
+  border-radius: 10px;
+  background: var(--text-color);
+}
+
+.hamburger-lines .line1 {
+  transform-origin: 0% 0%;
+  transition: transform 0.4s ease-in-out;
+}
+
+.hamburger-lines .line2 {
+  transition: transform 0.2s ease-in-out;
+}
+
+.hamburger-lines .line3 {
+  transform-origin: 0% 100%;
+  transition: transform 0.4s ease-in-out;
+}
+
+.opened .line1 {
+  transform: rotate(45deg);
+}
+
+.opened .line2 {
+  transform: scaleY(0);
+}
+
+.opened .line3 {
+  transform: rotate(-45deg);
+}
+
+/* Darkmode Toggle Switch */
+.theme-switch-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.theme-switch {
+  display: inline-block;
+  height: 34px;
+  width: 60px;
+
+  position: relative;
+}
+
+.theme-switch input {
+  display: none;
+}
+
+.slider {
+  background-color: #ccc;
+  transition: .4s;
+  cursor: pointer;
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
+.slider:before {
+  background-color: #fff;
+  content: "";
+  height: 26px;
+  width: 26px;
+  transition: .4s;
+
+  position: absolute;
+  left: 4px;
+  bottom: 4px;
+}
+
+input:checked+.slider {
+  /* background-color: #66bb6a; */
+  background-color: var(--vivid-color);
+}
+
+input:checked+.slider:before {
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
 #content {
   display: flex;
+  overflow: hidden;
+  height: calc(100% - var(--topbar-height));
 }
 
 ul {
@@ -56,12 +201,17 @@ ul {
 }
 
 nav {
-  padding: 0 20px 30px;
-  width: 325px;
-  min-height: 100vh;
+  padding: 0;
+  width: 0;
+  height: 100%;
   background-color: var(--secondary-theme-color);
   flex-shrink: 0;
+  transition: width .5s, left .5s;
+  overflow-y: auto;
+
   position: relative;
+  left: -325px;
+  z-index: 2;
 }
 
 nav>ul {
@@ -106,11 +256,6 @@ button:hover img,
   margin-left: 40px;
 }
 
-.project-btn .bulletpoint,
-.project-btn p {
-  pointer-events: none;
-}
-
 .active,
 .active>p {
   background-color: var(--main-theme-color);
@@ -135,12 +280,13 @@ button:hover img,
 
 main {
   width: 100%;
-  padding: 30px 20px;
-  margin: 0 70px;
+  height: 100%;
+  padding: 30px 90px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-y: auto;
 }
 
 .main-heading {
@@ -191,7 +337,7 @@ li:hover .drop-btn {
   position: absolute;
   font-size: 0.9rem;
   background-color: var(--secondary-theme-color);
-  border: 1px solid var(--default-radius);
+  border: 1px solid var(--task-border-muted-color);
   min-width: 110px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
@@ -202,7 +348,6 @@ li:hover .drop-btn {
   display: flex;
   align-items: center;
   gap: 4px;
-  /* user-select: none; */
   cursor: pointer;
 }
 
@@ -213,6 +358,11 @@ li:hover .drop-btn {
 
 .dropdown-content div:hover {
   background-color: var(--main-theme-color);
+}
+
+.project-btn .dropdown-content {
+  right: -6px;
+  top: 20px;
 }
 
 .show {
@@ -367,6 +517,7 @@ input[type="checkbox"]:checked::before {
 }
 
 .add-task-btn {
+  font-weight: initial;
   border: 1px solid var(--muted-color);
   color: var(--muted-color);
   background-color: inherit;
@@ -544,6 +695,12 @@ textarea {
   background-color: rgba(77, 67, 117, 0.6);
 }
 
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .modal-input-container {
   position: relative;
 }
@@ -565,6 +722,10 @@ textarea {
   left: 0px;
 }
 
+/* .modal-project-delete-warning {
+  color: var(--delete-color);
+} */
+
 .modal-buttons {
   display: flex;
   gap: 20px;
@@ -583,13 +744,177 @@ textarea {
   border: 1px solid var(--vivid-color);
 }
 
-.modal-add-project-btn {
+.modal-action-btn {
   background-color: var(--vivid-color);
   color: var(--secondary-theme-color);
 }
 
 #modal-project-name-input,
-.modal h4,
-.modal-buttons {
+.modal-project-delete-warning,
+.modal h4 {
   margin-top: 30px;
+}
+
+.modal-buttons {
+  margin-top: auto;
+}
+
+/* Breakpoints */
+
+/* Large devices (laptops/desktops, 992px and down) */
+@media only screen and (max-width: 992px) {
+  nav {
+    position: fixed;
+    height: calc(100% - var(--topbar-height));
+  }
+
+  .project-btn.active .drop-btn {
+    visibility: visible;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and down) */
+@media only screen and (max-width: 768px) {
+  :root {
+    --topbar-height: 50px;
+  }
+
+  .top-bar {
+    padding: 0 15px;
+  }
+
+  .theme-switch-wrapper,
+  .hamburger-lines {
+    transform: scale(0.86);
+  }
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  main {
+    margin: 0;
+    padding-top: 20px;
+  }
+
+  .main-heading {
+    font-size: 1.6rem;
+  }
+
+  .tasks-container>h2 {
+    font-size: 1.3rem;
+  }
+
+  .task {
+    grid-template: 1fr auto auto / 40px repeat(2, 1fr) 20px;
+  }
+
+  .dropdown-content {
+    right: 0;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  :root {
+    --topbar-height: 45px;
+  }
+
+  .top-bar {
+    padding: 0 6px 0 12px;
+  }
+
+  .theme-switch-wrapper,
+  .hamburger-lines {
+    transform: scale(0.75);
+  }
+
+  main {
+    padding: 15px 10px 30px;
+  }
+
+  .main-heading {
+    font-size: 1.5rem;
+  }
+
+  .main-content {
+    min-width: 310px;
+  }
+
+  .tasks-container>h2 {
+    font-size: 1.2rem;
+  }
+
+  .task-name {
+    font-size: 0.95rem;
+  }
+
+  .priority *,
+  .task-project-name {
+    font-size: 0.85rem;
+  }
+
+  .modal {
+    --height: 220px;
+    --width: 340px;
+    padding: 20px;
+  }
+
+  .modal-project-delete-warning {
+    font-size: 0.94rem;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .modal {
+    --width: 300px;
+  }
+
+  .modal-button {
+    gap: 16px;
+  }
+
+  .modal-buttons button {
+    height: 45px;
+    min-width: 110px;
+    font-size: .8rem;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  main {
+    padding: 15px 8px 30px;
+  }
+
+  .main-heading {
+    font-size: 1.35rem;
+  }
+
+  .main-content {
+    min-width: 300px;
+  }
+
+  .tasks-container>h2 {
+    font-size: 1.1rem;
+  }
+
+  .task-name {
+    font-size: 0.9rem;
+  }
+
+  .content,
+  .priority *,
+  .task-project-name,
+  nav * {
+    font-size: 0.8rem;
+  }
+
+  .modal {
+    --width: 280px;
+  }
+
+  .today-tab img,
+  .week-tab img,
+  .projects-tab img {
+    width: 22px;
+    height: 22px;
+  }
 }

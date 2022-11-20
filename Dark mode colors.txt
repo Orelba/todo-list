@@ -1,7 +1,0 @@
-  --text-color: rgb(244 242 255);
-  --main-theme-color: rgb(17 19 22);
-  --secondary-theme-color: rgb(28 30 36);
-  --vivid-color: rgb(255 255 255);
-  --muted-color: rgb(178, 174, 194);
-  --task-border-muted-color: rgb(43 43 52);
-  --default-radius: 12px;

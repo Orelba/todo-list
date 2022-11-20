@@ -5,12 +5,14 @@ import Task from './task'
 
 export default class userInterface {
   static loadHomePage() {
+    userInterface.loadTheme()
     userInterface.loadProjects()
     userInterface.initStaticButtons()
     userInterface.initDropdownMenus()
     userInterface.initTaskCollapse()
     userInterface.initTaskCheckboxEvents()
     userInterface.initModalBackdropEvent()
+    userInterface.initNavbar()
     // userInterface.openProject('General', document.querySelector('.project-list').firstElementChild)
     userInterface.openProject('Todo List', document.querySelector('.project-list').children[2]) // Remove
   }
@@ -145,9 +147,9 @@ export default class userInterface {
     taskPriority.classList.add('task-priority')
     taskPriority.textContent = `${priority} priority`
 
-    if (priority === 'low') taskPriority.style.color = '#112ba9'
-    else if (priority === 'normal') taskPriority.style.color = '#17642f'
-    else if (priority === 'high') taskPriority.style.color = '#bb0000'
+    if (priority === 'low') taskPriority.style.color = 'var(--low-priority-color)'
+    else if (priority === 'normal') taskPriority.style.color = 'var(--normal-priority-color)'
+    else if (priority === 'high') taskPriority.style.color = 'var(--high-priority-color)'
 
     const taskDueDate = document.createElement('p')
     taskDueDate.classList.add('task-due-date')
@@ -219,7 +221,7 @@ export default class userInterface {
     priorityDropdownContainerDiv.classList.add('priority-dropdown-container')
 
     const priorityIcon = document.createElement('img')
-    priorityIcon.src = 'images/priority.png'
+    priorityIcon.src = 'images/priority.svg'
     priorityIcon.alt = 'Priority'
     priorityIcon.height = 19
     priorityIcon.width = 19
@@ -270,6 +272,8 @@ export default class userInterface {
     const mainContent = document.querySelector('.main-content')
     mainContent.appendChild(taskForm)
 
+    const form = document.querySelector('.add-task-form')
+    form.scrollIntoView({ behavior: 'smooth' })
   }
 
   static removeTaskForm() {
@@ -416,10 +420,6 @@ export default class userInterface {
       if (menu !== dropdownContent)
         menu.classList.remove('show')
     })
-
-    // Prevent event from being fired on the project button underneath the dropdown button
-    e.stopImmediatePropagation()
-    e.stopPropagation()
   }
 
   static handleDropdownDeleteButton(e) {
@@ -433,19 +433,7 @@ export default class userInterface {
       userInterface.exitTaskForm()
     } else if (document.querySelector('.project-list').contains(e.target)) {
       const projectElement = e.target.closest('.project-btn')
-      const projectName = projectElement.querySelector('p').textContent
-
-      Storage.deleteProject(projectName)
-      projectElement.remove()
-
-      const currentlyOpenedProjectName = document.querySelector('.main-heading').textContent
-      if (currentlyOpenedProjectName === projectName) {
-        userInterface.openProject('General', document.querySelector('.project-list').firstElementChild)
-      } else {
-        Storage.updateTodayProject()
-        Storage.updateWeekProject()
-        userInterface.loadProjectContent(currentlyOpenedProjectName)
-      }
+      userInterface.openProjectModal('delete', projectElement)
     }
   }
 
@@ -489,11 +477,14 @@ export default class userInterface {
   }
 
   static initStaticButtons() {
+    const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
     const todayBtn = document.querySelector('.today-tab')
     const weekBtn = document.querySelector('.week-tab')
     const addProjectBtn = document.querySelector('.add-project')
     const addTaskBtn = document.querySelector('.add-task-btn')
 
+
+    toggleSwitch.addEventListener('change', userInterface.switchTheme, false);
     todayBtn.addEventListener('click', userInterface.openTodayProject)
     weekBtn.addEventListener('click', userInterface.openWeekProject)
     addProjectBtn.addEventListener('click', userInterface.openProjectModal.bind(this, 'add'))
@@ -533,29 +524,36 @@ export default class userInterface {
         && rect.left <= event.clientX && event.clientX <= rect.left + rect.width)
       if (!isInDialog) {
         dialog.close()
-        console.log('click')
       }
     })
   }
 
   static initAddModalEvents() {
     const modalCancelBtn = document.querySelector('.modal-cancel-btn')
-    const modalAddProjectBtn = document.querySelector('.modal-add-project-btn')
+    const modalActionBtn = document.querySelector('.modal-action-btn')
     const modalProjectNameInput = document.querySelector('#modal-project-name-input')
 
     modalCancelBtn.addEventListener('click', userInterface.closeProjectModal)
-    modalAddProjectBtn.addEventListener('click', userInterface.handleAddProjectButton)
+    modalActionBtn.addEventListener('click', userInterface.handleAddProjectButton)
     modalProjectNameInput.addEventListener('input', userInterface.removeModalErrorMessage)
   }
 
   static initEditModalEvents(sourceProjectName, button) {
     const modalCancelBtn = document.querySelector('.modal-cancel-btn')
-    const modalAddProjectBtn = document.querySelector('.modal-add-project-btn')
+    const modalActionBtn = document.querySelector('.modal-action-btn')
     const modalProjectNameInput = document.querySelector('#modal-project-name-input')
 
     modalCancelBtn.addEventListener('click', userInterface.closeProjectModal)
-    modalAddProjectBtn.addEventListener('click', userInterface.handleEditProjectButton.bind(this, sourceProjectName, button))
+    modalActionBtn.addEventListener('click', userInterface.handleEditProjectButton.bind(this, sourceProjectName, button))
     modalProjectNameInput.addEventListener('input', userInterface.removeModalErrorMessage)
+  }
+
+  static initDeleteModalEvents(projectName, button) {
+    const modalCancelBtn = document.querySelector('.modal-cancel-btn')
+    const modalActionBtn = document.querySelector('.modal-action-btn')
+
+    modalCancelBtn.addEventListener('click', userInterface.closeProjectModal)
+    modalActionBtn.addEventListener('click', userInterface.deleteProject.bind(this, projectName, button))
   }
 
   static createModalContent(modalType) {
@@ -563,8 +561,8 @@ export default class userInterface {
 
     const heading = document.createElement('h3')
 
-    const modalInputContainer = document.createElement('div')
-    modalInputContainer.classList.add('modal-input-container')
+    const modalInnerContainer = document.createElement('div')
+    modalInnerContainer.classList.add('modal-input-container')
 
     const projectNameInput = document.createElement('input')
     projectNameInput.type = 'text'
@@ -575,6 +573,9 @@ export default class userInterface {
     const modalErrorSpan = document.createElement('span')
     modalErrorSpan.classList.add('modal-error')
 
+    const modalProjectDeleteWarning = document.createElement('p')
+    modalProjectDeleteWarning.classList.add('modal-project-delete-warning')
+
     const modalButtonsContainer = document.createElement('div')
     modalButtonsContainer.classList.add('modal-buttons')
 
@@ -582,25 +583,31 @@ export default class userInterface {
     cancelButton.classList.add('modal-cancel-btn')
     cancelButton.textContent = 'Cancel'
 
-    const addProjectButton = document.createElement('button')
-    addProjectButton.classList.add('modal-add-project-btn')
+    const actionButton = document.createElement('button')
+    actionButton.classList.add('modal-action-btn')
 
     if (modalType === 'add') {
       heading.textContent = 'Add new project'
       projectNameInput.placeholder = 'Project name'
-      addProjectButton.textContent = 'Add project'
+      actionButton.textContent = 'Add project'
+      modalInnerContainer.append(projectNameInput, modalErrorSpan)
     } else if (modalType === 'edit') {
       heading.textContent = 'Edit project'
       projectNameInput.placeholder = 'New project name'
-      addProjectButton.textContent = 'Edit project'
+      actionButton.textContent = 'Edit project'
+      modalInnerContainer.append(projectNameInput, modalErrorSpan)
+    } else if (modalType === 'delete') {
+      heading.textContent = 'Delete Project'
+      actionButton.textContent = 'Delete project'
+      actionButton.style.backgroundColor = 'var(--delete-color)'
+      modalInnerContainer.append(modalProjectDeleteWarning)
     }
 
-    modalInputContainer.append(projectNameInput, modalErrorSpan)
-    modalButtonsContainer.append(cancelButton, addProjectButton)
+    modalButtonsContainer.append(cancelButton, actionButton)
 
     userInterface.clearModalContent()
 
-    modalContent.append(heading, modalInputContainer, modalButtonsContainer)
+    modalContent.append(heading, modalInnerContainer, modalButtonsContainer)
   }
 
   static clearModalContent() {
@@ -618,8 +625,15 @@ export default class userInterface {
     } else if (modalType === 'edit') {
       const projectName = projectElement.querySelector('p').textContent
       const projectNameInput = document.querySelector('#modal-project-name-input')
+
       projectNameInput.value = projectName
       userInterface.initEditModalEvents(projectName, projectElement)
+    } else if (modalType === 'delete') {
+      const projectName = projectElement.querySelector('p').textContent
+      const modalProjectDeleteWarning = document.querySelector('.modal-project-delete-warning')
+
+      modalProjectDeleteWarning.textContent = `Are you sure you want to delete "${projectName}"?`
+      userInterface.initDeleteModalEvents(projectName, projectElement)
     }
 
     dialog.showModal()
@@ -719,13 +733,28 @@ export default class userInterface {
     } else {
       userInterface.showAddTaskButton()
     }
-
   }
 
   static addProject(projectName) {
     Storage.addProject(new Project(projectName))
     const newProject = Storage.getTodoList().getProject(projectName)
     userInterface.createProject(newProject.getName(), newProject.getColor())
+  }
+
+  static deleteProject(projectName, button) {
+    Storage.deleteProject(projectName)
+    button.remove()
+
+    userInterface.closeProjectModal()
+
+    const currentlyOpenedProjectName = document.querySelector('.main-heading').textContent
+    if (currentlyOpenedProjectName === projectName) {
+      userInterface.openProject('General', document.querySelector('.project-list').firstElementChild)
+    } else {
+      Storage.updateTodayProject()
+      Storage.updateWeekProject()
+      userInterface.loadProjectContent(currentlyOpenedProjectName)
+    }
   }
 
   static openTodayProject() {
@@ -742,7 +771,7 @@ export default class userInterface {
     // Pressing the dropdown edit or delete makes this trigger
     if (e.target.classList.contains('dropdown-edit') || e.target.classList.contains('dropdown-delete')) return
 
-    const projectName = e.target.querySelector('p').textContent
+    const projectName = e.currentTarget.querySelector('p').textContent
     userInterface.openProject(projectName, this)
   }
 
@@ -875,6 +904,58 @@ export default class userInterface {
       Storage.setTaskCompletion(projectName, taskName.textContent, true)
       taskName.style.textDecoration = 'line-through'
     }
+  }
 
+  static initNavbar() {
+    const hamburgerButton = document.querySelector('.hamburger-lines')
+
+    hamburgerButton.addEventListener('click', () => {
+      if (hamburgerButton.classList.contains('opened')) {
+        hamburgerButton.classList.remove('opened')
+        userInterface.closeNav()
+      } else {
+        hamburgerButton.classList.add('opened')
+        userInterface.openNav()
+      }
+    })
+  }
+
+  static openNav() {
+    const nav = document.querySelector('nav')
+
+    nav.style.width = '325px'
+    nav.style.padding = '0 20px 30px'
+    nav.style.left = '0'
+  }
+
+  static closeNav() {
+    const nav = document.querySelector('nav')
+
+    nav.style.width = '0'
+    nav.style.padding = '0'
+    nav.style.left = '-325px'
+  }
+
+  static switchTheme(e) {
+    if (e.target.checked) {
+      document.documentElement.setAttribute('data-theme', 'dark')
+      Storage.setTheme('dark')
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light')
+      Storage.setTheme('light')
+    }
+  }
+
+  static loadTheme() {
+    const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+    const currentTheme = Storage.getTheme() ? Storage.getTheme() : null
+
+    if (currentTheme) {
+      document.documentElement.setAttribute('data-theme', currentTheme)
+
+      if (currentTheme === 'dark') {
+        toggleSwitch.checked = true
+      }
+    }
   }
 }

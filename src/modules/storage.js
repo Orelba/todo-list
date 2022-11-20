@@ -100,4 +100,12 @@ export default class Storage {
     todoList.updateWeekProject()
     Storage.saveTodoList(todoList)
   }
+
+  static setTheme(theme) {
+    localStorage.setItem('theme', theme)
+  }
+
+  static getTheme() {
+    return localStorage.getItem('theme')
+  }
 }
