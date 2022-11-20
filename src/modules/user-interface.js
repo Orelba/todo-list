@@ -77,6 +77,8 @@ export default class userInterface {
     tasksContainer.appendChild(tasksHeading)
 
     userInterface.loadTasks(projectName)
+
+    userInterface.toggleEmptyPagePlaceholder()
   }
 
   static createProject(name, color) {
@@ -430,6 +432,7 @@ export default class userInterface {
       Storage.deleteTask(projectName, taskName)
       taskElement.remove()
       userInterface.exitTaskForm()
+      userInterface.toggleEmptyPagePlaceholder()
     } else if (document.querySelector('.project-list').contains(e.target)) {
       const projectElement = e.target.closest('.project-btn')
       userInterface.openProjectModal('delete', projectElement)
@@ -732,9 +735,6 @@ export default class userInterface {
     } else {
       userInterface.showAddTaskButton()
     }
-
-    // TODO: if .task doesn't exist in .tasks-container, add empty page placeholder element
-    // Remember to remove placeholder element when a task is created
   }
 
   static addProject(projectName) {
@@ -837,6 +837,8 @@ export default class userInterface {
     userInterface.createTask(taskName, taskDescription, taskPriority, taskDueDate, projectName)
 
     userInterface.exitTaskForm()
+
+    userInterface.toggleEmptyPagePlaceholder()
   }
 
   static openEditTaskForm(taskElement) {
@@ -958,6 +960,46 @@ export default class userInterface {
       if (currentTheme === 'dark') {
         toggleSwitch.checked = true
       }
+    }
+  }
+
+  static createEmptyPagePlaceholder() {
+    const containerDiv = document.createElement('div')
+    containerDiv.classList.add('page-placeholder')
+
+    const Image = document.createElement('img')
+    Image.src = 'images/empty-placeholder.png'
+    Image.height = 450
+    Image.width = 450
+    Image.alt = 'Empty Page Placeholder'
+
+    const textDiv = document.createElement('div')
+    textDiv.classList.add('page-placeholder-text')
+
+    const firstH2 = document.createElement('h2')
+    firstH2.textContent = "It's pretty empty here..."
+
+    const secondH2 = document.createElement('h2')
+    secondH2.textContent = 'Add some tasks to your list'
+
+    textDiv.append(firstH2, secondH2)
+
+    containerDiv.append(Image, textDiv)
+
+    const tasksContainer = document.querySelector('.tasks-container')
+
+    tasksContainer.append(containerDiv)
+  }
+
+  static toggleEmptyPagePlaceholder() {
+    const tasksContainer = document.querySelector('.tasks-container')
+    const task = tasksContainer.querySelector('.task')
+    const placeholder = tasksContainer.querySelector('.page-placeholder')
+
+    if (!task && !placeholder) {
+      userInterface.createEmptyPagePlaceholder()
+    } else if (task && placeholder) {
+      placeholder.remove()
     }
   }
 }
