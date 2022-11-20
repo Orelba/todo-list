@@ -951,6 +951,11 @@ input[type="date"]::-webkit-datetime-edit {
     padding: 20px;
   }
 
+  .modal-error {
+    bottom: -28px;
+    font-size: 0.68rem;
+  }
+
   .modal-project-delete-warning {
     font-size: 0.94rem;
   }
