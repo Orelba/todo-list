@@ -274,7 +274,7 @@ export default class userInterface {
     mainContent.appendChild(taskForm)
 
     const form = document.querySelector('.add-task-form')
-    form.scrollIntoView({ behavior: 'smooth' , block: 'end'})
+    form.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' })
   }
 
   static removeTaskForm() {
