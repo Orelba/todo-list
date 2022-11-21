@@ -79,7 +79,7 @@ export default class userInterface {
 
     userInterface.loadTasks(projectName)
 
-    userInterface.toggleEmptyPagePlaceholder()
+    userInterface.toggleEmptyPagePlaceholderIfNeeded()
   }
 
   static createProject(name, color) {
@@ -159,8 +159,11 @@ export default class userInterface {
 
     priorityDiv.append(taskPriority, taskDueDate)
 
+    const projectNameDiv = document.createElement('div')
+    projectNameDiv.classList.add('task-project-wrapper')
+
     const projectNameP = document.createElement('p')
-    projectNameP.classList.add('task-project-name')
+    projectNameP.classList.add('task-project-name', 'truncate')
     projectNameP.textContent = projectName
 
     const projectBulletpoint = document.createElement('span')
@@ -168,12 +171,12 @@ export default class userInterface {
     projectBulletpoint.classList.add('bulletpoint')
     projectBulletpoint.style.backgroundColor = projectColor
 
-    projectNameP.appendChild(projectBulletpoint)
+    projectNameDiv.append(projectNameP, projectBulletpoint)
 
     if (description === null) {
-      article.append(checkbox, taskName, dropdown, content, priorityDiv, projectNameP)
+      article.append(checkbox, taskName, dropdown, content, priorityDiv, projectNameDiv)
     } else {
-      article.append(checkbox, collapseBtn, taskName, dropdown, content, priorityDiv, projectNameP)
+      article.append(checkbox, collapseBtn, taskName, dropdown, content, priorityDiv, projectNameDiv)
     }
 
     tasksContainer.appendChild(article)
@@ -430,7 +433,7 @@ export default class userInterface {
       Storage.deleteTask(projectName, taskName)
       taskElement.remove()
       userInterface.exitTaskForm()
-      userInterface.toggleEmptyPagePlaceholder()
+      userInterface.toggleEmptyPagePlaceholderIfNeeded()
     } else if (document.querySelector('.project-list').contains(e.target)) {
       const projectElement = e.target.closest('.project-btn')
       userInterface.openProjectModal('delete', projectElement)
@@ -851,7 +854,7 @@ export default class userInterface {
 
     userInterface.exitTaskForm()
 
-    userInterface.toggleEmptyPagePlaceholder()
+    userInterface.toggleEmptyPagePlaceholderIfNeeded()
   }
 
   static openEditTaskForm(taskElement) {
@@ -1007,7 +1010,7 @@ export default class userInterface {
     tasksContainer.append(containerDiv)
   }
 
-  static toggleEmptyPagePlaceholder() {
+  static toggleEmptyPagePlaceholderIfNeeded() {
     const tasksContainer = document.querySelector('.tasks-container')
     const task = tasksContainer.querySelector('.task')
     const placeholder = tasksContainer.querySelector('.page-placeholder')

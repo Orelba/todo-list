@@ -209,14 +209,11 @@ nav {
   transition: width .5s, left .5s;
   overflow-y: auto;
   overflow-x: hidden;
+  flex-shrink: 0;
 
   position: relative;
   left: -325px;
   z-index: 2;
-}
-
-nav * {
-  flex-shrink: 0;
 }
 
 nav>ul {
@@ -231,7 +228,7 @@ nav li {
 }
 
 nav li,
-.task-project-name {
+.task-project-wrapper {
   font-size: 0.9rem;
   display: flex;
   align-items: center;
@@ -424,7 +421,7 @@ input[type="checkbox"]:checked::before {
 }
 
 .task-checkbox,
-.task-project-name {
+.task-project-wrapper {
   align-self: center;
 }
 
@@ -513,12 +510,19 @@ input[type="checkbox"]:checked::before {
   justify-self: end;
 }
 
-.task-project-name {
+.task-project-wrapper {
   padding: 4px 4px 4px 8px;
   place-self: end end;
 
   grid-row: -1;
   grid-column: 3 / 5;
+}
+
+.truncate {
+  max-width: 35vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .add-task-btn {
