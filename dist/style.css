@@ -295,6 +295,7 @@ main {
   color: var(--vivid-color);
   text-align: center;
   overflow-wrap: anywhere;
+  margin-bottom: 10px;
 }
 
 .main-content {
