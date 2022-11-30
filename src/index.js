@@ -1,3 +1,3 @@
-import userInterface from './modules/user-interface'
+import UserInterface from './modules/user-interface'
 
-document.addEventListener('DOMContentLoaded', userInterface.loadHomePage)
+document.addEventListener('DOMContentLoaded', UserInterface.loadHomePage)

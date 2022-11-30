@@ -3,18 +3,18 @@ import Storage from './storage'
 import Project from './project'
 import Task from './task'
 
-export default class userInterface {
+export default class UserInterface {
   static loadHomePage() {
-    userInterface.loadTheme()
-    userInterface.loadProjects()
-    userInterface.initDynamicBodyHeightAdjustment()
-    userInterface.initStaticButtons()
-    userInterface.initDropdownMenus()
-    userInterface.initTaskCollapse()
-    userInterface.initTaskCheckboxEvents()
-    userInterface.initModalBackdropEvent()
-    userInterface.initNavbar()
-    userInterface.openProject('General', document.querySelector('.project-list').firstElementChild)
+    UserInterface.loadTheme()
+    UserInterface.loadProjects()
+    UserInterface.initDynamicBodyHeightAdjustment()
+    UserInterface.initStaticButtons()
+    UserInterface.initDropdownMenus()
+    UserInterface.initTaskCollapse()
+    UserInterface.initTaskCheckboxEvents()
+    UserInterface.initModalBackdropEvent()
+    UserInterface.initNavbar()
+    UserInterface.openProject('General', document.querySelector('.project-list').firstElementChild)
   }
 
   static loadProjects() {
@@ -22,7 +22,7 @@ export default class userInterface {
       .getProjects()
       .forEach(project => {
         if (project.name !== 'Today' && project.name !== 'This week') {
-          userInterface.createProject(project.name, project.color)
+          UserInterface.createProject(project.name, project.color)
         }
       })
   }
@@ -33,10 +33,10 @@ export default class userInterface {
       .getTasks()
       .forEach(task => {
         if (projectName === 'Today' || projectName === 'This week') {
-          const OriginProjectName = userInterface.getOriginProjectByTaskUUID(task.getUUID()).getName()
-          userInterface.createTask(task.name, task.description, task.priority, task.dueDate, OriginProjectName, task.completed)
+          const OriginProjectName = UserInterface.getOriginProjectByTaskUUID(task.getUUID()).getName()
+          UserInterface.createTask(task.name, task.description, task.priority, task.dueDate, OriginProjectName, task.completed)
         } else {
-          userInterface.createTask(task.name, task.description, task.priority, task.dueDate, projectName, task.completed)
+          UserInterface.createTask(task.name, task.description, task.priority, task.dueDate, projectName, task.completed)
         }
       })
   }
@@ -77,9 +77,9 @@ export default class userInterface {
 
     tasksContainer.appendChild(tasksHeading)
 
-    userInterface.loadTasks(projectName)
+    UserInterface.loadTasks(projectName)
 
-    userInterface.toggleEmptyPagePlaceholderIfNeeded()
+    UserInterface.toggleEmptyPagePlaceholderIfNeeded()
   }
 
   static createProject(name, color) {
@@ -94,7 +94,7 @@ export default class userInterface {
     projectNameP.textContent = name
 
     if (name !== 'General') {
-      const dropdown = userInterface.createDropdown('vertical')
+      const dropdown = UserInterface.createDropdown('vertical')
       li.append(bulletpoint, projectNameP, dropdown)
     } else {
       li.append(bulletpoint, projectNameP)
@@ -105,7 +105,7 @@ export default class userInterface {
 
     projectList.insertBefore(li, addNewProjectBtn)
 
-    userInterface.initProjectButtons()
+    UserInterface.initProjectButtons()
   }
 
   static createTask(name, description, priority, dueDate, projectName, isCompleted = false) {
@@ -136,7 +136,7 @@ export default class userInterface {
     taskName.textContent = name
     if (isCompleted) taskName.style.textDecoration = 'line-through'
 
-    const dropdown = userInterface.createDropdown('horizontal')
+    const dropdown = UserInterface.createDropdown('horizontal')
 
     const content = document.createElement('div')
     content.classList.add('content')
@@ -155,7 +155,7 @@ export default class userInterface {
 
     const taskDueDate = document.createElement('p')
     taskDueDate.classList.add('task-due-date')
-    taskDueDate.textContent = userInterface.getDateFormatted(dueDate)
+    taskDueDate.textContent = UserInterface.getDateFormatted(dueDate)
 
     priorityDiv.append(taskPriority, taskDueDate)
 
@@ -286,10 +286,10 @@ export default class userInterface {
   static exitTaskForm() {
     const mainHeading = document.querySelector('.main-heading')
     if (mainHeading.textContent !== 'Today' && mainHeading.textContent !== 'This week') {
-      userInterface.removeTaskForm()
-      userInterface.showAddTaskButton()
+      UserInterface.removeTaskForm()
+      UserInterface.showAddTaskButton()
     } else {
-      userInterface.removeTaskForm()
+      UserInterface.removeTaskForm()
     }
   }
 
@@ -313,9 +313,9 @@ export default class userInterface {
     const addTaskBtn = document.querySelector('.add-task-form-add-btn')
     const taskNameInput = document.querySelector('#add-task-form-task-name')
 
-    cancelBtn.addEventListener('click', userInterface.exitTaskForm)
-    addTaskBtn.addEventListener('click', userInterface.addTask)
-    taskNameInput.addEventListener('input', userInterface.hideTaskFormError)
+    cancelBtn.addEventListener('click', UserInterface.exitTaskForm)
+    addTaskBtn.addEventListener('click', UserInterface.addTask)
+    taskNameInput.addEventListener('input', UserInterface.hideTaskFormError)
   }
 
   static initEditTaskFormEvents(taskUUID) {
@@ -323,9 +323,9 @@ export default class userInterface {
     const editTaskBtn = document.querySelector('.add-task-form-add-btn')
     const taskNameInput = document.querySelector('#add-task-form-task-name')
 
-    cancelBtn.addEventListener('click', userInterface.exitTaskForm)
-    editTaskBtn.addEventListener('click', userInterface.editTask.bind(this, taskUUID))
-    taskNameInput.addEventListener('input', userInterface.hideTaskFormError)
+    cancelBtn.addEventListener('click', UserInterface.exitTaskForm)
+    editTaskBtn.addEventListener('click', UserInterface.editTask.bind(this, taskUUID))
+    taskNameInput.addEventListener('input', UserInterface.hideTaskFormError)
   }
 
   static createDropdown(iconType) {
@@ -398,17 +398,17 @@ export default class userInterface {
 
     contentContainer.addEventListener('click', function (e) {
       if (e.target.classList.contains('drop-btn')) {
-        userInterface.handleDropdowns(e)
+        UserInterface.handleDropdowns(e)
       }
       if (e.target.classList.contains('dropdown-delete')) {
-        userInterface.handleDropdownDeleteButton(e)
+        UserInterface.handleDropdownDeleteButton(e)
       }
       if (e.target.classList.contains('dropdown-edit')) {
-        userInterface.handleDropdownEditButton(e)
+        UserInterface.handleDropdownEditButton(e)
       }
     }, true)
 
-    window.addEventListener('click', userInterface.closeAllDropdowns)
+    window.addEventListener('click', UserInterface.closeAllDropdowns)
   }
 
   static handleDropdowns(e) {
@@ -432,19 +432,19 @@ export default class userInterface {
 
       Storage.deleteTask(projectName, taskName)
       taskElement.remove()
-      userInterface.exitTaskForm()
-      userInterface.toggleEmptyPagePlaceholderIfNeeded()
+      UserInterface.exitTaskForm()
+      UserInterface.toggleEmptyPagePlaceholderIfNeeded()
     } else if (document.querySelector('.project-list').contains(e.target)) {
       const projectElement = e.target.closest('.project-btn')
-      userInterface.openProjectModal('delete', projectElement)
+      UserInterface.openProjectModal('delete', projectElement)
     }
   }
 
   static handleDropdownEditButton(e) {
     if (e.target.closest('.task')) {
-      userInterface.openEditTaskForm(e.target.closest('.task'))
+      UserInterface.openEditTaskForm(e.target.closest('.task'))
     } else if (e.target.closest('.project-btn')) {
-      userInterface.openProjectModal('edit', e.target.closest('.project-btn'))
+      UserInterface.openProjectModal('edit', e.target.closest('.project-btn'))
     }
   }
 
@@ -481,7 +481,7 @@ export default class userInterface {
 
     tasksContainer.addEventListener('click', function (e) {
       if (e.target.classList.contains('collapse-btn')) {
-        userInterface.handleTaskCollapseButton(e)
+        UserInterface.handleTaskCollapseButton(e)
       }
     })
 
@@ -502,17 +502,17 @@ export default class userInterface {
     const addTaskBtn = document.querySelector('.add-task-btn')
 
 
-    toggleSwitch.addEventListener('change', userInterface.switchTheme, false);
-    todayBtn.addEventListener('click', userInterface.openTodayProject)
-    weekBtn.addEventListener('click', userInterface.openWeekProject)
-    addProjectBtn.addEventListener('click', userInterface.openProjectModal.bind(this, 'add'))
-    addTaskBtn.addEventListener('click', userInterface.handleAddTaskButton)
+    toggleSwitch.addEventListener('change', UserInterface.switchTheme, false);
+    todayBtn.addEventListener('click', UserInterface.openTodayProject)
+    weekBtn.addEventListener('click', UserInterface.openWeekProject)
+    addProjectBtn.addEventListener('click', UserInterface.openProjectModal.bind(this, 'add'))
+    addTaskBtn.addEventListener('click', UserInterface.handleAddTaskButton)
   }
 
   static handleAddTaskButton() {
-    userInterface.hideAddTaskButton()
-    userInterface.createTaskForm()
-    userInterface.initAddTaskFormEvents()
+    UserInterface.hideAddTaskButton()
+    UserInterface.createTaskForm()
+    UserInterface.initAddTaskFormEvents()
   }
 
   static hideAddTaskButton() {
@@ -529,7 +529,7 @@ export default class userInterface {
     const projectBtns = document.querySelectorAll('.project-btn')
 
     projectBtns.forEach(btn =>
-      btn.addEventListener('click', userInterface.handleProjectButton)
+      btn.addEventListener('click', UserInterface.handleProjectButton)
     )
   }
 
@@ -551,9 +551,9 @@ export default class userInterface {
     const modalActionBtn = document.querySelector('.modal-action-btn')
     const modalProjectNameInput = document.querySelector('#modal-project-name-input')
 
-    modalCancelBtn.addEventListener('click', userInterface.closeProjectModal)
-    modalActionBtn.addEventListener('click', userInterface.handleAddProjectButton)
-    modalProjectNameInput.addEventListener('input', userInterface.removeModalErrorMessage)
+    modalCancelBtn.addEventListener('click', UserInterface.closeProjectModal)
+    modalActionBtn.addEventListener('click', UserInterface.handleAddProjectButton)
+    modalProjectNameInput.addEventListener('input', UserInterface.removeModalErrorMessage)
   }
 
   static initEditModalEvents(sourceProjectName, button) {
@@ -561,17 +561,17 @@ export default class userInterface {
     const modalActionBtn = document.querySelector('.modal-action-btn')
     const modalProjectNameInput = document.querySelector('#modal-project-name-input')
 
-    modalCancelBtn.addEventListener('click', userInterface.closeProjectModal)
-    modalActionBtn.addEventListener('click', userInterface.handleEditProjectButton.bind(this, sourceProjectName, button))
-    modalProjectNameInput.addEventListener('input', userInterface.removeModalErrorMessage)
+    modalCancelBtn.addEventListener('click', UserInterface.closeProjectModal)
+    modalActionBtn.addEventListener('click', UserInterface.handleEditProjectButton.bind(this, sourceProjectName, button))
+    modalProjectNameInput.addEventListener('input', UserInterface.removeModalErrorMessage)
   }
 
   static initDeleteModalEvents(projectName, button) {
     const modalCancelBtn = document.querySelector('.modal-cancel-btn')
     const modalActionBtn = document.querySelector('.modal-action-btn')
 
-    modalCancelBtn.addEventListener('click', userInterface.closeProjectModal)
-    modalActionBtn.addEventListener('click', userInterface.deleteProject.bind(this, projectName, button))
+    modalCancelBtn.addEventListener('click', UserInterface.closeProjectModal)
+    modalActionBtn.addEventListener('click', UserInterface.deleteProject.bind(this, projectName, button))
   }
 
   static createModalContent(modalType) {
@@ -623,7 +623,7 @@ export default class userInterface {
 
     modalButtonsContainer.append(cancelButton, actionButton)
 
-    userInterface.clearModalContent()
+    UserInterface.clearModalContent()
 
     modalContent.append(heading, modalInnerContainer, modalButtonsContainer)
   }
@@ -636,22 +636,22 @@ export default class userInterface {
   static openProjectModal(modalType, projectElement = null) {
     const dialog = document.querySelector('.modal')
 
-    userInterface.createModalContent(modalType)
+    UserInterface.createModalContent(modalType)
 
     if (modalType === 'add') {
-      userInterface.initAddModalEvents()
+      UserInterface.initAddModalEvents()
     } else if (modalType === 'edit') {
       const projectName = projectElement.querySelector('p').textContent
       const projectNameInput = document.querySelector('#modal-project-name-input')
 
       projectNameInput.value = projectName
-      userInterface.initEditModalEvents(projectName, projectElement)
+      UserInterface.initEditModalEvents(projectName, projectElement)
     } else if (modalType === 'delete') {
       const projectName = projectElement.querySelector('p').textContent
       const modalProjectDeleteWarning = document.querySelector('.modal-project-delete-warning')
 
       modalProjectDeleteWarning.textContent = `Are you sure you want to delete "${projectName}"?`
-      userInterface.initDeleteModalEvents(projectName, projectElement)
+      UserInterface.initDeleteModalEvents(projectName, projectElement)
     }
 
     dialog.showModal()
@@ -694,28 +694,28 @@ export default class userInterface {
   static handleAddProjectButton() {
     const projectNameInputValue = (document.querySelector('#modal-project-name-input').value).trim()
 
-    if (!userInterface.validateModalProjectName('add', projectNameInputValue)) return
+    if (!UserInterface.validateModalProjectName('add', projectNameInputValue)) return
 
-    userInterface.addProject(projectNameInputValue)
-    userInterface.closeProjectModal()
+    UserInterface.addProject(projectNameInputValue)
+    UserInterface.closeProjectModal()
 
     const projectBtns = document.querySelectorAll('.project-btn')
     const lastAddedProjectBtn = projectBtns.item(projectBtns.length - 1)
 
-    userInterface.openProject(projectNameInputValue, lastAddedProjectBtn)
+    UserInterface.openProject(projectNameInputValue, lastAddedProjectBtn)
   }
 
   static handleEditProjectButton(projectName, button) {
     const projectNameInputValue = (document.querySelector('#modal-project-name-input').value).trim()
     const projectButtonName = button.querySelector('p')
 
-    if (!userInterface.validateModalProjectName('edit', projectNameInputValue, projectButtonName.textContent)) return
+    if (!UserInterface.validateModalProjectName('edit', projectNameInputValue, projectButtonName.textContent)) return
 
     Storage.setProjectName(projectName, projectNameInputValue)
 
     projectButtonName.textContent = projectNameInputValue
-    userInterface.closeProjectModal()
-    userInterface.loadProjectContent(projectNameInputValue)
+    UserInterface.closeProjectModal()
+    UserInterface.loadProjectContent(projectNameInputValue)
   }
 
   static handleTaskCollapseButton(e) {
@@ -742,47 +742,47 @@ export default class userInterface {
     NavBtns.forEach(btn => btn.classList.remove('active'))
     projectButton.classList.add('active')
 
-    userInterface.loadProjectContent(projectName)
+    UserInterface.loadProjectContent(projectName)
 
-    if (document.querySelector('.add-task-form')) userInterface.removeTaskForm()
+    if (document.querySelector('.add-task-form')) UserInterface.removeTaskForm()
 
     if (projectName === 'Today' || projectName === 'This week') {
-      userInterface.hideAddTaskButton()
+      UserInterface.hideAddTaskButton()
     } else {
-      userInterface.showAddTaskButton()
+      UserInterface.showAddTaskButton()
     }
   }
 
   static addProject(projectName) {
     Storage.addProject(new Project(projectName))
     const newProject = Storage.getTodoList().getProject(projectName)
-    userInterface.createProject(newProject.getName(), newProject.getColor())
+    UserInterface.createProject(newProject.getName(), newProject.getColor())
   }
 
   static deleteProject(projectName, button) {
     Storage.deleteProject(projectName)
     button.remove()
 
-    userInterface.closeProjectModal()
+    UserInterface.closeProjectModal()
 
     const currentlyOpenedProjectName = document.querySelector('.main-heading').textContent
     if (currentlyOpenedProjectName === projectName) {
-      userInterface.openProject('General', document.querySelector('.project-list').firstElementChild)
+      UserInterface.openProject('General', document.querySelector('.project-list').firstElementChild)
     } else {
       Storage.updateTodayProject()
       Storage.updateWeekProject()
-      userInterface.loadProjectContent(currentlyOpenedProjectName)
+      UserInterface.loadProjectContent(currentlyOpenedProjectName)
     }
   }
 
   static openTodayProject() {
     Storage.updateTodayProject()
-    userInterface.openProject('Today', this)
+    UserInterface.openProject('Today', this)
   }
 
   static openWeekProject() {
     Storage.updateWeekProject()
-    userInterface.openProject('This week', this)
+    UserInterface.openProject('This week', this)
   }
 
   static handleProjectButton(e) {
@@ -790,7 +790,7 @@ export default class userInterface {
     if (e.target.classList.contains('dropdown-edit') || e.target.classList.contains('dropdown-delete')) return
 
     const projectName = e.currentTarget.querySelector('p').textContent
-    userInterface.openProject(projectName, this)
+    UserInterface.openProject(projectName, this)
   }
 
   static showTaskFormError(errorText) {
@@ -812,22 +812,22 @@ export default class userInterface {
     const taskName = (document.querySelector('#add-task-form-task-name').value).trim()
 
     if (taskName === '') {
-      userInterface.showTaskFormError('Task name cannot be empty!')
+      UserInterface.showTaskFormError('Task name cannot be empty!')
       return
     }
 
     if (formType === 'add') {
       if (Storage.getTodoList().getProject(projectName).getTask(taskName)) {
-        userInterface.showTaskFormError('Task name already exists!')
+        UserInterface.showTaskFormError('Task name already exists!')
         return
       }
     } else if (formType === 'edit') {
-      const originProject = userInterface.getOriginProjectByTaskUUID(taskUUID)
+      const originProject = UserInterface.getOriginProjectByTaskUUID(taskUUID)
       const formTaskName = document.querySelector('#add-task-form-task-name').value
 
       originProject.getTasks().forEach(task => {
         if (task.getName() === formTaskName && task.getUUID() !== taskUUID) {
-          userInterface.showTaskFormError('Other task already has this name!')
+          UserInterface.showTaskFormError('Other task already has this name!')
           return
         }
       })
@@ -846,15 +846,15 @@ export default class userInterface {
     if (taskDescription === '') taskDescription = null
     if (taskDueDate === '') taskDueDate = 'No due date'
 
-    if (!userInterface.validateTaskForm('add')) return
+    if (!UserInterface.validateTaskForm('add')) return
 
     Storage.addTask(projectName, new Task(taskName, taskDescription, taskPriority, taskDueDate))
 
-    userInterface.createTask(taskName, taskDescription, taskPriority, taskDueDate, projectName)
+    UserInterface.createTask(taskName, taskDescription, taskPriority, taskDueDate, projectName)
 
-    userInterface.exitTaskForm()
+    UserInterface.exitTaskForm()
 
-    userInterface.toggleEmptyPagePlaceholderIfNeeded()
+    UserInterface.toggleEmptyPagePlaceholderIfNeeded()
   }
 
   static openEditTaskForm(taskElement) {
@@ -866,12 +866,12 @@ export default class userInterface {
     const taskDescription = task.getDescription()
     const taskDueDate = task.getDueDate()
 
-    if (document.querySelector('.add-task-form')) userInterface.removeTaskForm()
+    if (document.querySelector('.add-task-form')) UserInterface.removeTaskForm()
 
-    userInterface.hideAddTaskButton()
-    userInterface.createTaskForm()
-    userInterface.populateEditTaskForm(taskName, taskDescription, taskDueDate, taskPriority)
-    userInterface.initEditTaskFormEvents(taskUUID)
+    UserInterface.hideAddTaskButton()
+    UserInterface.createTaskForm()
+    UserInterface.populateEditTaskForm(taskName, taskDescription, taskDueDate, taskPriority)
+    UserInterface.initEditTaskFormEvents(taskUUID)
 
     const form = document.querySelector('.add-task-form')
     form.scrollIntoView({ behavior: 'smooth', block: 'end' })
@@ -885,10 +885,10 @@ export default class userInterface {
 
     if (formTaskDescription === '') formTaskDescription = null
     if (formTaskDueDate === '') formTaskDueDate = 'No due date'
-    if (!userInterface.validateTaskForm('edit', taskUUID)) return
+    if (!UserInterface.validateTaskForm('edit', taskUUID)) return
 
     // Get Origin project and task names
-    const originProject = userInterface.getOriginProjectByTaskUUID(taskUUID)
+    const originProject = UserInterface.getOriginProjectByTaskUUID(taskUUID)
     const originProjectName = originProject.getName()
 
     // Edit task in storage
@@ -901,8 +901,8 @@ export default class userInterface {
     const currentlyOpenedProjectName = document.querySelector('.main-heading').textContent
     Storage.updateTodayProject()
     Storage.updateWeekProject()
-    userInterface.loadProjectContent(currentlyOpenedProjectName)
-    userInterface.exitTaskForm()
+    UserInterface.loadProjectContent(currentlyOpenedProjectName)
+    UserInterface.exitTaskForm()
   }
 
   static initTaskCheckboxEvents() {
@@ -910,7 +910,7 @@ export default class userInterface {
 
     tasksContainer.addEventListener('click', e => {
       if (e.target.classList.contains('task-checkbox')) {
-        userInterface.setTaskCompletionState(e.target.parentElement)
+        UserInterface.setTaskCompletionState(e.target.parentElement)
       }
     })
   }
@@ -935,10 +935,10 @@ export default class userInterface {
     hamburgerButton.addEventListener('click', () => {
       if (hamburgerButton.classList.contains('opened')) {
         hamburgerButton.classList.remove('opened')
-        userInterface.closeNav()
+        UserInterface.closeNav()
       } else {
         hamburgerButton.classList.add('opened')
-        userInterface.openNav()
+        UserInterface.openNav()
       }
     })
   }
@@ -1016,7 +1016,7 @@ export default class userInterface {
     const placeholder = tasksContainer.querySelector('.page-placeholder')
 
     if (!task && !placeholder) {
-      userInterface.createEmptyPagePlaceholder()
+      UserInterface.createEmptyPagePlaceholder()
     } else if (task && placeholder) {
       placeholder.remove()
     }
