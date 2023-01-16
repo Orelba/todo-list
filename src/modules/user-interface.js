@@ -15,6 +15,8 @@ export default class UserInterface {
     UserInterface.initModalBackdropEvent()
     UserInterface.initNavbar()
     UserInterface.openProject('General', document.querySelector('.project-list').firstElementChild)
+    // Remove class that prevents transitions and animations on load
+    setTimeout(() => document.body.classList.remove('preload'), 250)
   }
 
   static loadProjects() {
@@ -464,7 +466,7 @@ export default class UserInterface {
   static initDynamicBodyHeightAdjustment() { // A 'height: 100vh' on body bug solution for mobile devices
     // Set initial Height
     document.querySelector('body').style.height = window.innerHeight + "px"
-    
+
     // Fix body height 100vh bug on mobile phones by setting the height on resize
     window.addEventListener('resize', () => {
       let deviceWidth = window.matchMedia("(max-width: 1024px)")
