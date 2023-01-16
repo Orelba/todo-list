@@ -57,6 +57,12 @@ body {
   overflow: hidden;
 }
 
+body.preload * {
+  animation-duration: 0s !important;
+  -webkit-animation-duration: 0s !important;
+  transition: background-color 0s, opacity 0s, color 0s, width 0s, height 0s, padding 0s, margin 0s !important;
+}
+
 img {
   user-select: none;
 }
@@ -266,6 +272,10 @@ button:hover img,
   color: var(--vivid-color);
 }
 
+.project-btn {
+  animation: opacity-zero-to-full .22s ease-out;
+}
+
 .bulletpoint {
   --size: 10px;
 
@@ -418,6 +428,7 @@ input[type="checkbox"]:checked::before {
   margin-bottom: 8px;
   padding: 8px 8px 4px 0;
   overflow-wrap: break-word;
+  animation: opacity-zero-to-full .22s ease-out;
 
   display: grid;
   grid-template: 1fr auto auto / 60px repeat(2, 1fr) 20px;
@@ -482,13 +493,18 @@ input[type="checkbox"]:checked::before {
 .content {
   font-size: 0.9rem;
   max-height: 0;
+  opacity: 0;
   overflow: hidden;
   white-space: pre-wrap;
-  transition: max-height 0.22s ease-out;
+  transition: max-height .22s ease-out, opacity .22s ease-out;
   background-color: var(--secondary-theme-color);
 
   grid-row: 2 / 3;
   grid-column: 2 / 4;
+}
+
+.collapsed {
+  opacity: 1;
 }
 
 .priority {
@@ -540,6 +556,7 @@ input[type="checkbox"]:checked::before {
   align-items: center;
   justify-content: center;
   gap: 6px;
+  animation: opacity-zero-to-full .22s ease-out;
 }
 
 .add-task-btn:hover {
@@ -587,6 +604,9 @@ input[type="checkbox"]:checked::before {
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  transform-origin: 50% 0;
+  animation: scroll-down .22s ease-out;
 }
 
 .add-task-form-error-field {
@@ -815,6 +835,29 @@ input[type="date"]::-webkit-datetime-edit {
   color: var(--text-color);
   font-size: 0.8rem;
   font-weight: 700;
+}
+
+/* Animations */
+@keyframes opacity-zero-to-full {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scroll-down {
+  from {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
 }
 
 /* Breakpoints */
